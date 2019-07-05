@@ -1435,6 +1435,7 @@ function setAuthorizers(skuId, autrs) {
 function authorizeSku(skuId, trnId) {
   // Checking parameters.
   Utils.assert(_checkStr(skuId, 1, 32), _throwErr(error.SKU_ID_ERR));
+  Utils.assert(_checkStr(trnId, 0, 32), _throwErr(error.TRN_ID_ERR));
 
   // Checking whether the sku exists.
   const skuTkKey = _makeKey(keys.sku, skuId);

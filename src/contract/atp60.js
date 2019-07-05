@@ -1033,7 +1033,7 @@ function createTranche(id, des, lms) {
  */
 function trancheInfo(trnId) {
   // Checking parameters.
-  Utils.assert(_checkStr(trnId, 1, 32), _throwErr(error.TRN_ID_ERR));
+  Utils.assert(_checkStr(trnId, 0, 32), _throwErr(error.TRN_ID_ERR));
 
   // Checking whether the tranche exists.
   const trnVal = _checkExist(_makeKey(keys.trn, trnId), error.TRN_NOT_EST);
@@ -1366,7 +1366,7 @@ function additionalIssuance(skuId, trnId, supply) {
 function assignToTranche(skuId, toTrnId, val) {
   // Checking parameters.
   Utils.assert(_checkStr(skuId, 1, 32), _throwErr(error.SKU_ID_ERR));
-  Utils.assert(_checkStr(toTrnId, 1, 32), _throwErr(error.TRN_ID_ERR));
+  Utils.assert(_checkStr(toTrnId, 0, 32), _throwErr(error.TRN_ID_ERR));
   Utils.assert(Utils.stoI64Check(val) && Utils.int64Compare(val, 0) > 0, _throwErr(error.VAL_ERR));
 
   // Checking whether the sender is seller.
@@ -1440,6 +1440,7 @@ function setAuthorizers(skuId, autrs) {
 function authorizeSku(skuId, trnId) {
   // Checking parameters.
   Utils.assert(_checkStr(skuId, 1, 32), _throwErr(error.SKU_ID_ERR));
+  Utils.assert(_checkStr(trnId, 0, 32), _throwErr(error.TRN_ID_ERR));
 
   // Checking whether the sku exists.
   const skuTkKey = _makeKey(keys.sku, skuId);
@@ -1520,7 +1521,7 @@ function skusOfSpu(spuId) {
  */
 function skusOfTranche(trnId) {
   // Checking parameters.
-  Utils.assert(_checkStr(trnId, 1, 32), _throwErr(error.TRN_ID_ERR));
+  Utils.assert(_checkStr(trnId, 0, 32), _throwErr(error.TRN_ID_ERR));
 
   // Checking whether the tranche exists.
   trnId = _checkTranche(trnId);
