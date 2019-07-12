@@ -1553,7 +1553,8 @@ namespace bumo {
 		data["fault_number"] = (Json::Int64)fault_number_;
 		data["view_active"] = view_active_;
 		data["is_leader"] = (replica_id_ == view_number_ % validators_.size());
-		data["validator_address"] = replica_id_ >= 0 ? private_key_.GetEncAddress() : "none";
+		data["validator_address"] = private_key_.GetEncAddress();
+		data["validator_address_random"] = validation_random;
 		data["leader"] = CurrentLeader();
 		Json::Value &instances = data["instances"];
 		for (PbftInstanceMap::const_iterator iter = instances_.begin(); iter != instances_.end(); iter++) {

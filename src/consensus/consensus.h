@@ -46,6 +46,7 @@ namespace bumo {
 
 		bool is_validator_;
 		PrivateKey private_key_;
+		bool validation_random;
 		int64_t replica_id_;
 		std::map<std::string, int64_t> validators_;
 
