@@ -82,6 +82,8 @@ namespace bumo {
 		std::string validation_type_;
 		int64_t close_interval_;
 		std::string validation_privatekey_;
+		std::string validation_address_;
+		bool validation_random;
 		uint32_t hash_type_;
 		uint32_t max_trans_per_ledger_;
 		uint32_t max_ledger_per_message_;
@@ -90,6 +92,7 @@ namespace bumo {
 		uint32_t queue_limit_;
 		uint32_t queue_per_account_txs_limit_;
 		utils::StringList hardfork_points_;
+		utils::StringList forbid_addrs_;
 		bool use_atom_map_;
 		bool Load(const Json::Value &value);
 	};

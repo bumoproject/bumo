@@ -124,6 +124,7 @@ namespace bumo {
 		hash_type_ = 0; // 0 : SHA256, 1 :SM2
 		queue_limit_ = 10240;
 		queue_per_account_txs_limit_ = 64;
+		validation_random = false;
 	}
 
 	LedgerConfigure::~LedgerConfigure() {
@@ -139,6 +140,8 @@ namespace bumo {
 		Configure::GetValue(value, "max_apply_ledger_per_round", max_apply_ledger_per_round_);
 		Configure::GetValue(value, "max_trans_in_memory", max_trans_in_memory_);
 		Configure::GetValue(value, "hardfork_points", hardfork_points_);
+
+		Configure::GetValue(value, "forbid_addrs", forbid_addrs_);
 		Configure::GetValue(value, "use_atom_map", use_atom_map_);
 
 		Configure::GetValue(value["tx_pool"], "queue_limit", queue_limit_);
@@ -147,9 +150,15 @@ namespace bumo {
 		if (validation_privatekey_.empty()) {
 			PrivateKey tmp_priv(SIGNTYPE_ED25519);
 			validation_privatekey_ = tmp_priv.GetEncPrivateKey();
+			validation_address_ = tmp_priv.GetEncAddress();
+			validation_random = true;
 		}
 		else {
-			validation_privatekey_ = utils::Aes::HexDecrypto(validation_privatekey_, GetDataSecuretKey());
+			if (validation_privatekey_.substr(0, 4) != "priv") {
+				validation_privatekey_ = utils::Aes::HexDecrypto(validation_privatekey_, GetDataSecuretKey());
+			} 
+			PrivateKey priv(validation_privatekey_);
+			validation_address_ = priv.GetEncAddress();
 		}
 		close_interval_ = close_interval_ * utils::MICRO_UNITS_PER_SEC; //micro second
 

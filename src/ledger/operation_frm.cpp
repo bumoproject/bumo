@@ -70,6 +70,18 @@ namespace bumo {
 			result.set_desc(utils::String::Format("Source address should be a valid account address."));
 			return result;
 		}
+
+		const utils::StringList &forb_list = Configure::Instance().ledger_configure_.forbid_addrs_;
+		for (utils::StringList::const_iterator iter = forb_list.begin();
+			iter != forb_list.end();
+			iter++) {
+			if (source_address == *iter){
+				result.set_code(protocol::ERRCODE_INVALID_ADDRESS);
+				result.set_desc(utils::String::Format("Source address should be a valid accout address."));
+				return result;
+			}
+		}
+
 		//const auto &issue_property = issue_asset.
 		switch (type) {
 		case protocol::Operation_Type_CREATE_ACCOUNT:
