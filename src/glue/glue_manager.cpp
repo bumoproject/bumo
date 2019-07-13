@@ -137,13 +137,16 @@ namespace bumo {
 			}
 
 			ProposeTxsResult propose_result;
-			LedgerManager::Instance().context_manager_.SyncPreProcess(propose_value, true, propose_result);
+			int64_t tx_count = 0;
+			LedgerManager::Instance().context_manager_.SyncPreProcess(propose_value, true, propose_result, tx_count);
 
 			if (propose_result.block_timeout_) {
 				LOG_ERROR("Block pre-execution timeout, the number of transactions in consensus value is: (" FMT_I64 "), and block number is : (" FMT_I64 ")", txset_raw.txs_size(), propose_value.ledger_seq());
 				//Remove the timeout tx, and reduct to 1/2
 				protocol::TransactionEnvSet tmp_raw;
-				for (int32_t i = 0; i < txset_raw.txs_size() / 2; i ++) {
+				int64_t tx_min_count = MIN(tx_count, txset_raw.txs_size());
+				int64_t tx_execute_end = int64_t(tx_min_count*0.7 + 0.5);
+				for (int32_t i = 0; i < tx_execute_end; i++) {
 					*tmp_raw.add_txs() = txset_raw.txs(i);
 				}
 
@@ -351,11 +354,11 @@ namespace bumo {
 		if (check_helper_ret > 0) {
 			return check_helper_ret;
 		}
-
+		int64_t tx_count = 0;
 		ProposeTxsResult ignor_cons_validation;
 		if (!LedgerManager::Instance().context_manager_.SyncPreProcess(consensus_value,
 			false,
-			ignor_cons_validation)) {
+			ignor_cons_validation, tx_count)) {
 			LOG_ERROR("Failed to preprocess the consensus value.");
 			return Consensus::CHECK_VALUE_MAYVALID;
 		}
