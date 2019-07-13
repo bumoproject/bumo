@@ -243,7 +243,7 @@ function transferKey(from, to){
 function transfer(to, shares){
     Utils.assert(Utils.addressCheck(to), 'Invalid address:' + to + '.');
     Utils.assert(Number.isInteger(shares) && shares >= 0, 'Invalid shares:' + shares + '.');
-    Utils.assert(cobuilders[Chain.tx.sender][pledged], 'Unpled shares can be withdrawn directly.');
+    Utils.assert(cobuilders[Chain.tx.sender][pledged], 'Unpledged shares can be withdrawn directly.');
     Utils.assert(Utils.int64Compare(shares, cobuilders[Chain.tx.sender][share]) <= 0, 'Transfer shares > holding shares.');
 
     let key = transferKey(Chain.tx.sender, to);
@@ -256,7 +256,7 @@ function transfer(to, shares){
 
 function accept(transferor){
     Utils.assert(Utils.addressCheck(transferor), 'Invalid address:' + transferor + '.');
-    Utils.assert(cobuilders[transferor][pledged], 'Unpled shares can be revoked directly.');
+    Utils.assert(cobuilders[transferor][pledged], 'Unpledged shares can be revoked directly.');
 
     let key = transferKey(transferor, Chain.tx.sender);
     let shares = Chain.load(key);
@@ -264,21 +264,23 @@ function accept(transferor){
     Utils.assert(Utils.int64Compare(shares, cobuilders[transferor][share]) <= 0, 'Transfer shares > holding shares.');
     Utils.assert(Utils.int64Compare(Utils.int64Mul(cfg.unit, shares), Chain.msg.coinAmount) === 0, 'unit * shares !== Chain.msg.coinAmount.');
 
+    let gain = '0';
+    if(Utils.int64Sub(cobuilders[transferor][share], shares) === '0'){
+        callDPOS('0', extractInput());
+        cobuilders = loadObj(cobuildersKey);
+        gain = cobuilders[transferor][award];
+        delete cobuilders[transferor];
+    }
+    else{
+        Utils.assert(cobuilders[Chain.tx.sender][pledged], Chain.tx.sender + ' has unpledged share.');
+        cobuilders[transferor][share] = Utils.int64Sub(cobuilders[transferor][share], shares);
+    }
+
     if(cobuilders[Chain.tx.sender] === undefined){
         cobuilders[Chain.tx.sender] = cobuilder(shares, true);
     }
     else{
         cobuilders[Chain.tx.sender][share] = Utils.int64Add(cobuilders[Chain.tx.sender][share], shares);
-    }
-
-    let gain = '0';
-    if(Utils.int64Sub(cobuilders[transferor][share], shares) === 0){
-        callDPOS('0', extractInput());
-        gain = cobuilders[transferor][award];
-        delete cobuilders[transferor];
-    }
-    else{
-        cobuilders[transferor][share] = Utils.int64Sub(cobuilders[transferor][share], shares);
     }
 
     Chain.del(key);
@@ -512,7 +514,7 @@ function main(input_str){
 function init(input_str){
     let params = JSON.parse(input_str).params;
     Utils.assert(Utils.int64Mod(params.unit, oneBU) === '0' && Utils.int64Compare(params.unit, minUnit) >= 0, 'Illegal unit:' + params.unit + '.');
-    Utils.assert(Utils.int64Mod(params.shares, 1) === '0', 'Illegal raise shares:' + params.shares + '.');
+    Utils.assert(Number.isInteger(params.shares) && params.shares > 0, 'Illegal raise shares:' + params.shares + '.');
 
     let dpos_cfg = queryDposCfg();
     let initFund = Utils.int64Sub(Chain.msg.coinAmount, dpos_cfg.base_reserve);
