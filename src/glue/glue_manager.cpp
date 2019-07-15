@@ -147,7 +147,7 @@ namespace bumo {
 					total_tx_count = MIN(propose_result.tx_execute_count_, txset_raw.txs_size());
 				}
 
-				//Remove the timeout tx, and reduct to 2/3 with executed count
+				//Remove the timeout tx, and reduct to 0.7 with executed count
 				protocol::TransactionEnvSet tmp_raw;
 				int64_t next_tx_size = int64_t(total_tx_count * 0.7 + 0.5);
 				LOG_ERROR("Block pre-execution timeout, the number of transactions in consensus value is: (" FMT_I64 "), and block number is: (" FMT_I64 "), executed tx count: (" FMT_I64 "), next tx count: (" FMT_I64 ")",
