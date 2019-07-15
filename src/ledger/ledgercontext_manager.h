@@ -142,7 +142,7 @@ namespace bumo {
 
 		//<0 : notfound 1: found and success 0: found and failed
 		int32_t CheckComplete(const std::string &chash);
-		bool SyncPreProcess(const protocol::ConsensusValue& consensus_value, bool propose, ProposeTxsResult &propose_result, int64_t &tx_execute_count);
+		bool SyncPreProcess(const protocol::ConsensusValue& consensus_value, bool propose, ProposeTxsResult &propose_result);
 
 		//<0 : processing 1: found and success 0: found and failed
 //		int32_t AsyncPreProcess(const protocol::ConsensusValue& consensus_value, int64_t timeout, PreProcessCallback callback, int32_t &timeout_tx_index);

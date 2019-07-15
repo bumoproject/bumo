@@ -567,7 +567,7 @@ namespace bumo {
 		return true;
 	}
 
-	bool LedgerContextManager::SyncPreProcess(const protocol::ConsensusValue &consensus_value, bool propose, ProposeTxsResult &propose_result, int64_t &tx_execute_count) {
+	bool LedgerContextManager::SyncPreProcess(const protocol::ConsensusValue &consensus_value, bool propose, ProposeTxsResult &propose_result) {
 
 		std::string con_str = consensus_value.SerializeAsString();
 		std::string chash = HashWrapper::Crypto(con_str);
@@ -597,8 +597,9 @@ namespace bumo {
 			}
 		}
 
+		propose_result.tx_execute_count_ = ledger_context->closing_ledger_->GetTxCount();
+
 		if (propose_result.block_timeout_) { //cancel it
-			tx_execute_count = ledger_context->closing_ledger_->GetTxCount();
 			ledger_context->Cancel();
 			LOG_ERROR("Pre-executing consensus value(" FMT_I64 "ms) timeout", (utils::Timestamp::HighResolution() - time_start) / utils::MICRO_UNITS_PER_MILLI);
 			return false;
