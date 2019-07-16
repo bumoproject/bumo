@@ -2498,7 +2498,6 @@ value: {
 
   ```json
   {
-      "address": "buQkeKX5wfsZScjePaL3BPdxSmX1cLwc37Ve",
       "description": "未付款",
       "addition": { // 附加信息
           "id": ["parentid", "name", "type", "value", "decimals", "uint"],
