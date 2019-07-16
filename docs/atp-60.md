@@ -54,14 +54,14 @@ ATP 60 (Asset Tokenization Protocol) 指基于BuChain的账本结构对商户的
 
 | 数据类型 | 描述                               |
 | -------- | ---------------------------------- |
-| image    | value 表示为 [image格式\|url\|hash类型\|hash值] |
-| mov    | value 表示为 [mov格式\|url\|hash类型\|hash值] |
+| image    | value 表示为 [url_hash类型_hash值] |
+| mov    | value 表示为 [url_hash类型_hash值] |
 
  **文档类型：**
 
-| 数据类型 | 描述                                           |
-| -------- | ---------------------------------------------- |
-| file     | value 表示为 [file格式\|url\|hash类型\|hash值] |
+| 数据类型 | 描述                               |
+| -------- | ---------------------------------- |
+| file     | value 表示为 [url_hash类型_hash值] |
 
  **父行类型：**
 
@@ -134,9 +134,9 @@ value: {
         "5":  ["0",     "企业组织机构代码", "text", "N5464**", 　 "-",      "-"],
         "6":  ["0",     "法人姓名", "text",       "某某", 　　　  "-",      "-"],
         "7":  ["0",     "法人身份证号", "text",    "1**",        "-",      "-"],
-        "8":  ["0",     "营业执照照片", "image", "[image格式|url|hash类型|hash值]",　"-",  "-"],
-        "9":  ["0",     "法人身份证正照片", "image", "[image格式|url|hash类型|hash值]","-",  "-"],
-        "10":  ["0",     "法人身份证反照片", "image", "[image格式|url|hash类型|hash值]","-", "-"]
+        "8":  ["0",     "营业执照照片", "image", "[url_hash类型_hash值]",　"-",  "-"],
+        "9":  ["0",     "法人身份证正照片", "image", "[url_hash类型_hash值]","-",  "-"],
+        "10":  ["0",     "法人身份证反照片", "image", "[url_hash类型_hash值]","-", "-"]
     }
 }
 ```
@@ -328,8 +328,8 @@ value: {
     "faceValue": "$10", // 面值
     "totalSupply": "[Token 总量]",
     "decimals": "[Token 精度]",
-    "mainIcon": "[image格式|url|hash类型|hash]", // 长度不得超过 10240
-    "viceIcons": ["[image格式|url1|hash类型|hash]", "[image格式|url2|hash类型|hash]"], // 最多 5 个，且每个长度不得超过 10240
+    "mainIcon": "[iconType|url|hashType|hash]", // 长度不得超过 10240
+    "viceIcons": ["[iconType|url1|hashType|hash]", "[iconType|url2|hashType|hash]"], // 最多 5 个，且每个长度不得超过 10240
     "labels": ["[标签1]", "[标签2]", ...],  // 最多 20 个，且每个标签长度不得超过1024
     "description": "[SKU 描述]",
     "redemptionAddress": "[兑付区块链账户地址]", // 兑付成功时，商家将商品的 Token 转移到该地址
@@ -338,7 +338,7 @@ value: {
     "attributes": {
        "id": ["parentid", "name", "type", "value", "decimals", "uint"],
        "1":  ["0",     　 "参考价","int",       3000,  　　           "-",    　"CNY"],
-       "2":  ["0",     　　"icon", "image",     "[image格式|url|hash类型|hash值]", "-",    　 "-"],
+       "2":  ["0",     　　"icon", "image",     "[url_hash类型_hash值]", "-",    　 "-"],
        "3":  ["0",     　　"颜色", "text",     "白色",                  "-",    　"-"],
        "4":  ["0",     　 "内存", "int",        64,                  "-",    　 "G"],
        "5":  ["0",     　 "型号", "text",     "中国大陆",             "-",    　 "-"]
@@ -783,8 +783,8 @@ value: {
     "id": ["parentid", "name", "type", "value", "decimals", "uint"],
     "1":  [0,     　　"证据上传人姓名",　"text", "[证据上传人姓名]",　"-",　 "-"],
     "2":  [0,     　　"证据",　      "class",    "-",　           "-",　 "-"],
-    "3":  [2,     　　"证据1",　"image", "[image格式|url|hash类型|hash值]",　"-",　 "-"],
-    "4":  [2,     　　"证据2",　"image", "[image格式|url|hash类型|hash值]",　"-",　 "-"],
+    "3":  [2,     　　"证据1",　"image", "[url_hash类型_hash值]",　"-",　 "-"],
+    "4":  [2,     　　"证据2",　"image", "[url_hash类型_hash值]",　"-",　 "-"],
   }
 }
 ```
@@ -813,16 +813,15 @@ value: {
         "1":  ["0", "企业组织机构代码", "text", "N5464**", "-", "-"],
         "2":  ["0", "法人姓名", "text",     "某某",   "-",      "-"],
         "3":  ["0", "法人身份证号", "text",  "1**",   "-",      "-"],
-        "4":  ["0", "营业执照照片", "image", "[image格式|url|hash类型|hash值]","-", "-"],
-        "5":  ["0", "法人身份证正照片", "image", "[image格式|url|hash类型|hash值]","-", "-"],
-        "6": ["0", "法人身份证反照片", "image", "[image格式|url|hash类型|hash值]","-", "-"]
+        "4":  ["0", "营业执照照片", "image", "[url_hash类型_hash值]","-", "-"],
+        "5":  ["0", "法人身份证正照片", "image", "[url_hash类型_hash值]","-", "-"],
+        "6": ["0", "法人身份证反照片", "image", "[url_hash类型_hash值]","-", "-"]
     }
   }
   
-  companyFullName：公司名称全称，长度[1, 1024]。
-  companyShortName：公司名称简称，长度[1, 64]。
+  companyName：公司名称，长度[1, 1024]。
   companyContact：公司联系方式，长度[1, 64]。
-  companyCertification：公司证件，可扩展字段。可选。
+  companyCertification：公司证件，可扩展字段，但不可为空。
   ```
 
 - 返回值
@@ -886,17 +885,16 @@ value: {
           "1":  ["0", "企业组织机构代码", "text", "N5464**", "-", "-"],
           "2":  ["0", "法人姓名", "text",     "某某",   "-",      "-"],
           "3":  ["0", "法人身份证号", "text",  "1**",   "-",      "-"],
-          "4":  ["0", "营业执照照片", "image", "[image格式|url|hash类型|hash值]","-", "-"],
-          "5":  ["0", "法人身份证正照片", "image", "[image格式|url|hash类型|hash值]","-", "-"],
-          "6": ["0", "法人身份证反照片", "image", "[image格式|url|hash类型|hash值]","-", "-"]
+          "4":  ["0", "营业执照照片", "image", "[url_hash类型_hash值]","-", "-"],
+          "5":  ["0", "法人身份证正照片", "image", "[url_hash类型_hash值]","-", "-"],
+          "6": ["0", "法人身份证反照片", "image", "[url_hash类型_hash值]","-", "-"]
       }
     }
   }
   
-  companyFullName：公司名称全称，长度[1, 1024]。
-  companyShortName：公司名称简称，长度[1, 64]。
+  companyName：公司名称，长度[1, 1024]。
   companyContact：公司联系方式，长度[1, 64]。
-  companyCertification：公司证件，可扩展字段，但不可为空。可选。
+  companyCertification：公司证件，可扩展字段，但不可为空。
   ```
   
 - 返回值
@@ -940,9 +938,9 @@ value: {
       "5":  ["0",  "企业组织机构代码", "text", "N5464**", 　"-",      "-"],
       "6":  ["0",  "法人姓名", "text",       "某某", 　　  "-",      "-"],
       "7":  ["0",  "法人身份证号", "text",    "1**",    "-",      "-"],
-      "8":  ["0",  "营业执照照片", "image", "[image格式|url|hash类型|hash值]","-",  "-"],
-      "9":  ["0",  "法人身份证正照片", "image", "[image格式|url|hash类型|hash值]","-", "-"],
-      "10": ["0", "法人身份证反照片", "image", "[image格式|url|hash类型|hash值]","-", "-"]
+      "8":  ["0",  "营业执照照片", "image", "[url_hash类型_hash值]","-",  "-"],
+      "9":  ["0",  "法人身份证正照片", "image", "[url_hash类型_hash值]","-", "-"],
+      "10": ["0", "法人身份证反照片", "image", "[url_hash类型_hash值]","-", "-"]
     }
   }
   ```
@@ -977,7 +975,7 @@ value: {
   
   id：文档编号。长度[1, 32]。
   name：文档名称。长度[1, 1024]。
-  url：文档链接。长度[1, 10240]。
+  url：文档链接。长度[1, 20480]。
   hashType：哈希类型。长度[1, 64]。
   hash：哈希值。长度[1, 2048]。
   ```
@@ -1083,7 +1081,7 @@ value: {
   id：SPU 的编号，长度[1, 32]。
   name：SPU 名称，长度[1, 1024]。
   type：SPU 类别，长度[1, 64]。
-  attributes：SPU 属性。可选。
+  attributes：SPU 属性，不可为空。
   ```
 
 - 返回值
@@ -1125,7 +1123,7 @@ value: {
   spuId：SPU 的编号，长度[1, 32]。
   name：SPU 名称，长度[1, 1024]。
   type：SPU 类别，长度[1, 64]。
-  attributes：SPU 属性。可选。
+  attributes：SPU 属性，不可为空。
   ```
 
 - 返回值
@@ -1207,8 +1205,8 @@ value: {
   }
   
   id: Tranche 编号，长度[1, 32]。
-  description：Tranche 描述，长度[0, 64K]。
-  limits：Tranche 约束，可为空。可选。
+  descrption：Tranche 描述，长度[0, 64K]。
+  limits：Tranche 约束，可为空。
   ```
 
 - 返回值
@@ -1276,7 +1274,7 @@ value: {
           "publicKey": "b001223ec2424dece185915dde81e0c367365c9572dbf8d86e57e6f78766752ece349794b9fe",
           "fullName": "北京贸易集中处理中心",
           "shortName": "MC",
-          "logo": "png|url|hashType|hash",
+          "logo": "png_url_hashType_hash",
           "contact": "contact@my.com",
           "period": "7", //　单位: 天，承兑期限 
           "addition": {
@@ -1288,13 +1286,12 @@ value: {
   }
   
   id：兑付编号。长度[1, 32]。
-  publicKey：承兑方区块链公钥。公钥对应的地址必须有效且账户在链上存在。在申请兑付时，兑付申请人可使用该公钥对私密信息进行加密处理。
+  publicKey：承兑方区块链公钥。公钥对应的地址必须有效且账户在链上存在。
   fullName：承兑方名称全称。长度[1, 1024]。
   shortName: 承兑方名称简称。长度[1, 64]。
-  logo：承兑方logo。可选，字符串，长度[1, 10240]。
   contract：承兑方联系方式。长度[1, 64]。
-  period：承兑期限。长度[1, 16]。
-  addition：附加信息。可为空。可选。
+  peroid：承兑期限。长度[1, 16]。
+  addition：附加信息。可为空。
   ```
 
 - 返回值
@@ -1333,7 +1330,7 @@ value: {
       "publicKey": "b001223ec2424dece185915dde81e0c367365c9572dbf8d86e57e6f78766752ece349794b9fe", // 承兑方区块链公钥
       "fullName": "北京贸易集中处理中心",
       "shortName": "MC",
-      "logo": "png|url|hashType|hash",
+      "logo": "png_url_hashType_hash",
       "contact": "contact@my.com",
       "period": "7", // 承兑期限，单位是天
       "addition": { //　附加信息
@@ -1393,21 +1390,20 @@ value: {
   }
   
   skuId：SKU 的编号，长度 [1, 32]。
-  trancheId：发行到的 tranche 的编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche。可选。
-  isDefaultTranche：是否设置默认 trahche。true 表示设置默认 tranche，此时上方的 trancheId 即是默认 tranche，但是默认 tranche 不能进行转移和兑付。不设置或设置为false, 表示不配置，此时上方的 trancheId 是普通的 tranche，可进行转移和兑付。可选。
-  spuId：SPU 的编号，若没有 SPU，可不赋值。可选。
+  trancheId：发行到的 tranche 的编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche
+  isDefaultTranche：是否设置默认 trahche。true 表示设置默认 tranche，此时上方的 trancheId 即是默认 tranche，但是默认 tranche 不能进行转移和兑付。不设置或设置为false, 表示不配置，此时上方的 trancheId 是普通的 tranche，可进行转移和兑付。
+  spuId：SPU 的编号，若没有 SPU，可不赋值。
   name：Token 名称。
   symbol：Token 符号。
-  faceValue：面值，前面符号表示单位，后面是数值。可选。
   supply：Token 当前发行量。
   decimals：Token 精度。
-  description：SKU 描述。可选。
-  mainIcon：主图，长度[1, 10240]。可选。
-  viceIcons：副图列表，最多5个，每个长度[1, 10240]。可选。
+  description：SKU 描述。
+  mainIcon：主图，长度[1, 10240]。
+  viceIcons：副图列表，最多5个，每个长度[1, 10240]。
   redemptionAddress：回购区块链账户地址，当兑付完成时，将 SKU Token 转移到该地址。地址必须有效且账户在链上存在。
   acceptanceId：承兑方的编号，长度[1, 32]。
-  abstract：摘要属性，表示用来描述SKU的必要属性。列表中填写的的attributes中的id。最多20个。可选。
-  attributes：属性信息。可选。
+  abstract：摘要属性，表示用来描述SKU的必要属性。列表中填写的的attributes中的id。最多20个。
+  attributes：属性信息。
   ```
   
 - 返回值
@@ -1491,14 +1487,14 @@ value: {
   }
   
   skuId：SKU 的编号，长度 [1, 32]。
-  name：Token 名称。不设置，则不修改。可选。
-  symbol：Token 符号。不设置，则不修改。可选。
-  description：SKU 描述。不设置，则不修改。可选。
-  mainIcon：主图，长度[1, 10240]。不设置，则不修改。可选。
-  viceIcons：副图列表，最多5个，每个长度[1, 10240]。不设置，则不修改。可选。
-  redemptionAddress：回购区块链账户地址，当兑付完成时，将 SKU Token 转移到该地址。地址必须有效且账户在链上存在。不设置，则不修改。可选。
-  abstract：摘要属性，表示用来描述SKU的必要属性。列表中填写的的attributes中的id。最多20个。不设置，则不修改。可选。
-  attributes：属性信息。不设置，则不修改。可选。
+  name：Token 名称。不设置，则不修改。
+  symbol：Token 符号。不设置，则不修改。
+  description：SKU 描述。不设置，则不修改。
+  mainIcon：主图，长度[1, 10240]。不设置，则不修改。
+  viceIcons：副图列表，最多5个，每个长度[1, 10240]。不设置，则不修改。
+  redemptionAddress：回购区块链账户地址，当兑付完成时，将 SKU Token 转移到该地址。地址必须有效且账户在链上存在。不设置，则不修改。
+  abstract：摘要属性，表示用来描述SKU的必要属性。列表中填写的的attributes中的id。最多20个。不设置，则不修改。
+  attributes：属性信息。不设置，则不修改。
   ```
 
 - 返回值
@@ -1635,7 +1631,7 @@ value: {
   }
   
   skuId：SKU 编号，长度[1, 32]。
-  toTrancheId：目标 Tranche 编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche。可选。
+  toTrancheId：目标 Tranche 编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche
   value：分配的数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   ```
   
@@ -1700,7 +1696,7 @@ value: {
   }
   
   skuId: SKU 编号。
-  trancheId: tranche 编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche。可选。
+  trancheId: tranche 编号，长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche
   ```
 
 - 返回值
@@ -1937,8 +1933,8 @@ value: {
       "totalSupply": "10000",
       "decimals": "0",
       "description": "iphone 5s 白色 64G 中国大陆版",
-      "mainIcon": "[png|https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557751338635&di=3f6b989903ddf1cf9c10cc530c849d93&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01815657c24f1b0000012e7eb901a1.jpg|md5|2938472190312847]",
-      "viceIcons": ["png|https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557751338635&di=3f6b989903ddf1cf9c10cc530c849d93&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01815657c24f1b0000012e7eb901a1.jpg|md5|2938472190312847"],
+      "mainIcon": "[png_]", // 长度不得超过 10240
+      "viceIcons": ["[iconType_url1_hashType_hash]", "[iconType_url2_hashType_hash]"],
       "labels": ["iphone", "iphone 5s", "iphone 5s 白色", "iphone 5s 白色 64G", "iphone 5s 白色 64G 中国大陆版"],
       "redemptionAddress": "buQfVYf9Jvz9CJV9s2vzQaRkhMkfwn3BGFb1",
       "attributes": { // 自定义特性
@@ -2028,7 +2024,7 @@ value: {
 
   ```json
   {
-    "method": "destroy",
+    "method": "destroyByTranche",
     "params": {
       "address": "buQYH2VeL87svMuj2TdhgmoH9wSmcqrfBner",
       "skuId": "3333333215",
@@ -2039,7 +2035,7 @@ value: {
 
   address：待销毁的账户地址。地址必须有效且账户在链上存在。
   skuId：SKU 编号。长度[1, 32]。
-  trancheId：Tranche 编号。长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche。可选。
+  trancheId：Tranche 编号。长度[0, 32]。不设置，则使用 id 为 "0" 的 tranche。
   value：待销毁的数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   ```
 
@@ -2073,14 +2069,14 @@ value: {
       "params":{
           "spender":"buQnTmK9iBFHyG2oLce7vcejPQ1g5xLVycsj",
           "skuId": "3333333217",
-          "trancheId": "1",
+          "tranche": "1",
           "value":"1000000"
       }
   }
   
   spender：被授权的区块链账户地址。地址必须有效且账户在链上存在。
   skuId：SKU 编号。长度[1, 32]。
-  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。可选。
+  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。
   value：待授权的数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   ```
 
@@ -2146,7 +2142,7 @@ value: {
   
   from：源账户地址。地址必须有效且账户在链上存在。
   skuId：SKU 编号。长度[1, 32]。
-  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。可选。
+  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。
   to：目标账户地址。地址必须有效且账户在链上存在。
   value：待转移的数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   ```
@@ -2181,7 +2177,7 @@ value: {
   }
   
   skuId：SKU 编号。长度[1, 32]。
-  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。可选。
+  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。
   to：目标账户地址。地址必须有效且账户在链上存在。
   value：待转移的数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   ```
@@ -2194,10 +2190,44 @@ value: {
 
 
 
+### 查询指定 tranche 授权数量
+
+- 功能
+
+  返回 spender 仍然被允许从 owner 指定 tranche 提取的指定 SKU token 金额。
+
+- 入口函数
+
+  `query`
+
+- 参数json结构
+
+  ```json
+  {
+      "method":"allowanceByTranche",
+      "params":{
+          "owner":"buQnTmK9iBFHyG2oLce7vcejPQ1g5xLVycsj",
+          "spender":"buQYH2VeL87svMuj2TdhgmoH9wSmcqrfBner",
+          "skuId": "3333333217",
+          "trancheId": "1"
+      }
+  }
+  ```
+
+
+- 返回值
+
+  ```json
+  {
+      "allowance":"1000000"
+  } 
+  ```
+
+
+
 ### 申请兑付
 
-> 1. 仅限 token 持有人调用该接口。
-> 2. 当addition中有买家私密信息的时候，可通过使用承兑的公钥对信息进行加密处理。 
+> 仅限 token 持有人调用该接口。
 
 该接口用于 token 持有人申请将 token 换为实物。
 
@@ -2229,10 +2259,10 @@ value: {
   
   redemptionId：兑付编号。长度[1, 32]。
   skuId：SKU 编号。长度[1, 32]。
-  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。可选。
+  trancheId：Tranche 编号。长度[0, 32]。不设置，表示使用 id 为 0 的 tranche。
   value：兑付数量。必须是数字字符串，且大于0，不得大于 int64 的最大值。
   acceptanceId：承兑方编号。长度[1, 32］。
-  addition：附加信息。可为空。可选。
+  addition：附加信息。可为空。
   ```
   
 - 返回值
@@ -2339,9 +2369,6 @@ value: {
     "value": "100",
     "acceptanceId": "1", // 承兑方编号
     "status": 0, // 0 表示申请兑付，1 表示已兑付，2 表示兑付成功，3 表示兑付失败
-    "requestTime": "1231321654654",
-    "sendTime": "1326646456511",
-    "finishTime": "145651321654654",
     "addition": { // 附加信息
       "id": ["parentid", "name", "type", "value", "decimals", "uint"],
       "1":  ["0",        "买家信息", "class", "-",    "-",     "-"],
@@ -2387,7 +2414,7 @@ value: {
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   address：纠纷申请人区块链账户地址。地址必须有效且账户在链上存在。
   reason：纠纷原因。长度[1, 64K]。
-  addition：附加信息。可选。
+  addition：附加信息。
   ```
   
 - 返回值
@@ -2421,8 +2448,8 @@ value: {
         "id": ["parent_id", "name", "type", "value", "decimals", "uint"],
         "1":  ["0",         "证据上传人姓名", "text",   "[证据上传人姓名]", "-", "-"],
         "2":  ["0",         "证据",  "class", "-",    "-", "-"],
-        "3":  ["2",         "证据1", "image", "[image格式|url|hash类型|hash值]", "-", "-"],
-        "4":  ["2",         "证据2", "image", "[image格式|url|hash类型|hash值]", "-", "-"]
+        "3":  ["2",         "证据1", "image", "[url|hash类型|hash值]", "-", "-"],
+        "4":  ["2",         "证据2", "image", "[url|hash类型|hash值]", "-", "-"]
       }
     }
   }
@@ -2430,7 +2457,7 @@ value: {
   redemptionId：兑付编号。长度[1, 32]。
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   description：描述。长度[1, 64K]。
-  addition:附加信息。可选。
+  addition:附加信息。
   ```
 
 - 返回值
@@ -2468,13 +2495,14 @@ value: {
 
   ```json
   {
+      "address": "buQkeKX5wfsZScjePaL3BPdxSmX1cLwc37Ve",
       "description": "未付款",
       "addition": { // 附加信息
           "id": ["parentid", "name", "type", "value", "decimals", "uint"],
           "1":  ["0",     　　"证据上传人姓名",　"text", "[证据上传人姓名]",　"-",　 "-"],
           "2":  ["0",     　　"证据",　      "class",    "-",　           "-",　 "-"],
-          "3":  ["2",     　　"证据1",　"image", "[image格式|url|hash类型|hash值]",　"-",　 "-"],
-          "4":  ["2",     　　"证据2",　"image", "[image格式|url|hash类型|hash值]",　"-",　 "-"],
+          "3":  ["2",     　　"证据1",　"image", "[url_hash类型_hash值]",　"-",　 "-"],
+          "4":  ["2",     　　"证据2",　"image", "[url_hash类型_hash值]",　"-",　 "-"],
       }
   }
   ```
@@ -2507,7 +2535,7 @@ value: {
   redemptionId：兑付编号。长度[1, 32]。
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   status：纠纷处理结果。1 或 2。1 表示兑付申请人获胜， 2表示商家获胜。
-  description：描述，长度[1, 64K]。可选。
+  description：描述，长度[1, 64K]。
   ```
 
 - 返回值
@@ -2644,5 +2672,4 @@ value: {
 | 20080  | The dispute has finished.                                    |
 | 20081  | The sender is not the controller in dispute.                 |
 | 20082  | The controller is invalid.                                   |
-| 20083  | The public key of the acceptor is invalid.                   |
 
