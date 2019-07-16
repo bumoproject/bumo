@@ -968,7 +968,7 @@ value: {
     }
   }
   
-  id：文档编号。长度[1, 64]。
+  id：文档编号。长度[1, 32]。
   name：文档名称。长度[1, 1024]。
   url：文档链接。长度[1, 20480]。
   hashType：哈希类型。长度[1, 64]。
@@ -1073,7 +1073,7 @@ value: {
     }
   }
   
-  id：SPU 的编号，长度[1, 64]。
+  id：SPU 的编号，长度[1, 32]。
   name：SPU 名称，长度[1, 1024]。
   type：SPU 类别，长度[1, 64]。
   attributes：SPU 属性，不可为空。
@@ -1115,7 +1115,7 @@ value: {
     }
   }
   
-  spuId：SPU 的编号，长度[1, 64]。
+  spuId：SPU 的编号，长度[1, 32]。
   name：SPU 名称，长度[1, 1024]。
   type：SPU 类别，长度[1, 64]。
   attributes：SPU 属性，不可为空。
@@ -1197,7 +1197,7 @@ value: {
     }
   }
   
-  id: Tranche 编号，长度[1, 64]。
+  id: Tranche 编号，长度[1, 32]。
   descrption：Tranche 描述，长度[0, 64K]。
   limits：Tranche 约束，可为空。
   ```
@@ -1393,7 +1393,7 @@ value: {
   mainIcon：主图，长度[1, 10240]。
   viceIcons：副图列表，最多5个，每个长度[1, 10240]。
   redemptionAddress：回购区块链账户地址，当兑付完成时，将 SKU Token 转移到该地址。地址必须有效且账户在链上存在。
-  acceptanceId：承兑方的编号，长度[1, 64]。
+  acceptanceId：承兑方的编号，长度[1, 32]。
   abstract：摘要属性，表示用来描述SKU的必要属性。列表中填写的的attributes中的id。最多20个。
   attributes：属性信息。
   ```
@@ -2367,7 +2367,7 @@ value: {
     }
   }
   
-  redemptionId：兑付编号。长度[1, 64]。
+  redemptionId：兑付编号。长度[1, 32]。
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   address：纠纷申请人区块链账户地址。地址必须有效且账户在链上存在。
   reason：纠纷原因。长度[1, 64K]。
@@ -2412,7 +2412,7 @@ value: {
     }
   }
   
-  redemptionId：兑付编号。长度[1, 64]。
+  redemptionId：兑付编号。长度[1, 32]。
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   description：描述。长度[1, 64K]。
   addition:附加信息。
@@ -2492,7 +2492,7 @@ value: {
       }
   }
   
-  redemptionId：兑付编号。长度[1, 64]。
+  redemptionId：兑付编号。长度[1, 32]。
   applicant：兑付申请人区块链账户地址。地址必须有效且账户在链上存在。
   status：纠纷处理结果。1 或 2。1 表示兑付申请人获胜， 2表示商家获胜。
   description：描述，长度[1, 64K]。
