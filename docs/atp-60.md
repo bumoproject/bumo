@@ -2369,6 +2369,9 @@ value: {
     "value": "100",
     "acceptanceId": "1", // 承兑方编号
     "status": 0, // 0 表示申请兑付，1 表示已兑付，2 表示兑付成功，3 表示兑付失败
+    "requestTime": "1231321654654",
+    "sendTime": "1326646456511",
+    "finishTime": "145651321654654",
     "addition": { // 附加信息
       "id": ["parentid", "name", "type", "value", "decimals", "uint"],
       "1":  ["0",        "买家信息", "class", "-",    "-",     "-"],
