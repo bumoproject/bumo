@@ -272,7 +272,7 @@ function accept(transferor){
         delete cobuilders[transferor];
     }
     else{
-        Utils.assert(cobuilders[Chain.tx.sender] !== undefined && cobuilders[Chain.tx.sender][pledged], Chain.tx.sender + ' has unpledged share.');
+        Utils.assert(cobuilders[Chain.tx.sender] === undefined || cobuilders[Chain.tx.sender][pledged], Chain.tx.sender + ' has unpledged share.');
         cobuilders[transferor][share] = Utils.int64Sub(cobuilders[transferor][share], shares);
     }
 
