@@ -1223,7 +1223,7 @@ function setSku(skuId, name, symbol, mainIcn, viceIcns, labels, des, repnAddr, a
   _store(skuTkKey, _toStr(skuTk));
 
   // Committing event.
-  Chain.tlog('modifySku', _makeTlogSender(), skuId, name);
+  Chain.tlog('modifySku', _makeTlogSender(), skuId);
 }
 
 /**
