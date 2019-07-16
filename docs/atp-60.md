@@ -1933,8 +1933,8 @@ value: {
       "totalSupply": "10000",
       "decimals": "0",
       "description": "iphone 5s 白色 64G 中国大陆版",
-      "mainIcon": "[png_]", // 长度不得超过 10240
-      "viceIcons": ["[iconType_url1_hashType_hash]", "[iconType_url2_hashType_hash]"],
+      "mainIcon": "[png|https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557751338635&di=3f6b989903ddf1cf9c10cc530c849d93&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01815657c24f1b0000012e7eb901a1.jpg|md5|2938472190312847]",
+      "viceIcons": ["png|https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1557751338635&di=3f6b989903ddf1cf9c10cc530c849d93&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01815657c24f1b0000012e7eb901a1.jpg|md5|2938472190312847"],
       "labels": ["iphone", "iphone 5s", "iphone 5s 白色", "iphone 5s 白色 64G", "iphone 5s 白色 64G 中国大陆版"],
       "redemptionAddress": "buQfVYf9Jvz9CJV9s2vzQaRkhMkfwn3BGFb1",
       "attributes": { // 自定义特性
