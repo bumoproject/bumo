@@ -930,7 +930,7 @@ function documentInfo(docId) {
 function createSpu(id, name, type, attrs) {
   // Checking parameters.
   Utils.assert(_checkStr(id, 1, 32), _throwErr(error.SPU_ID_ERR));
-  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.FL_NM_ERR));
+  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.NAME_ERR));
   Utils.assert(_checkStr(type, 1, 64), _throwErr(error.SPU_TYPE_ERR));
 
   // Checking whether the sender is seller.
@@ -962,7 +962,7 @@ function createSpu(id, name, type, attrs) {
 function setSpu(spuId, name, type, attrs) {
   // Checking parameters.
   Utils.assert(_checkStr(spuId, 1, 32), _throwErr(error.SPU_ID_ERR));
-  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.FL_NM_ERR));
+  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.NAME_ERR));
   Utils.assert(_checkStr(type, 1, 64), _throwErr(error.SPU_TYPE_ERR));
 
   // Checking whether the spu exists.
@@ -1067,7 +1067,7 @@ function issue(skuId, trnId, isDftTrn, spuId, name, symbol, faceVal, supply, dec
   Utils.assert(_checkStr(skuId, 1, 32), _throwErr(error.SKU_ID_ERR));
   Utils.assert(isDftTrn === undefined || typeof isDftTrn === 'boolean',_throwErr(error.IS_DFT_TRN_ERR));
   Utils.assert(_checkStr(spuId, 0, 32), _throwErr(error.SPU_ID_ERR));
-  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.FL_NM_ERR));
+  Utils.assert(_checkStr(name, 1, 1024), _throwErr(error.NAME_ERR));
   Utils.assert(_checkStr(symbol, 1, 16), _throwErr(error.TK_BML_ERR));
   Utils.assert(_checkStr(faceVal, 0, 32), _throwErr(error.FC_ERR));
   Utils.assert(Utils.stoI64Check(supply) && Utils.int64Compare(supply, 0) > 0, _throwErr(error.TK_SPY_ERR));
@@ -1193,7 +1193,7 @@ function setSkusChoice(spuId, choice) {
 function setSku(skuId, name, symbol, mainIcn, viceIcns, labels, des, repnAddr, abs, attrs) {
   // Checking parameters.
   Utils.assert(_checkStr(skuId, 1, 32), _throwErr(error.SKU_ID_ERR));
-  Utils.assert(_checkStr(name, 0, 1024), _throwErr(error.FL_NM_ERR));
+  Utils.assert(_checkStr(name, 0, 1024), _throwErr(error.NAME_ERR));
   Utils.assert(_checkStr(symbol, 0, 16), _throwErr(error.TK_BML_ERR));
   Utils.assert(_checkStr(mainIcn, 0, 10240), _throwErr(error.MAIN_ICN_ERR));
   Utils.assert(_checkJSNArr(viceIcns, 0, 5), _throwErr(error.VICE_ICNS_ERR));
