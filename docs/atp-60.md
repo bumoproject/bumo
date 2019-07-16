@@ -2024,7 +2024,7 @@ value: {
 
   ```json
   {
-    "method": "destroyByTranche",
+    "method": "destroy",
     "params": {
       "address": "buQYH2VeL87svMuj2TdhgmoH9wSmcqrfBner",
       "skuId": "3333333215",
