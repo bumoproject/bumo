@@ -821,7 +821,7 @@ value: {
   
   companyName：公司名称，长度[1, 1024]。
   companyContact：公司联系方式，长度[1, 64]。
-  companyCertification：公司证件，可扩展字段，但不可为空。
+  companyCertification：公司证件，可扩展字段。
   ```
 
 - 返回值
@@ -2187,41 +2187,6 @@ value: {
   成功：无返回值
 
   失败：抛异常
-
-
-
-### 查询指定 tranche 授权数量
-
-- 功能
-
-  返回 spender 仍然被允许从 owner 指定 tranche 提取的指定 SKU token 金额。
-
-- 入口函数
-
-  `query`
-
-- 参数json结构
-
-  ```json
-  {
-      "method":"allowanceByTranche",
-      "params":{
-          "owner":"buQnTmK9iBFHyG2oLce7vcejPQ1g5xLVycsj",
-          "spender":"buQYH2VeL87svMuj2TdhgmoH9wSmcqrfBner",
-          "skuId": "3333333217",
-          "trancheId": "1"
-      }
-  }
-  ```
-
-
-- 返回值
-
-  ```json
-  {
-      "allowance":"1000000"
-  } 
-  ```
 
 
 

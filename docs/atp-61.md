@@ -816,7 +816,7 @@ value: {
   
   companyName：公司名称，长度[1, 1024]。
   companyContact：公司联系方式，长度[1, 64]。
-  companyCertification：公司证件，可扩展字段，但不可为空。
+  companyCertification：公司证件，可扩展字段。
   ```
 
 - 返回值
@@ -2455,7 +2455,6 @@ value: {
 
   ```json
   {
-      "address": "buQkeKX5wfsZScjePaL3BPdxSmX1cLwc37Ve",
       "description": "未付款",
       "addition": { // 附加信息
           "id": ["parentid", "name", "type", "value", "decimals", "uint"],
