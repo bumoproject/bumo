@@ -2069,7 +2069,7 @@ value: {
       "params":{
           "spender":"buQnTmK9iBFHyG2oLce7vcejPQ1g5xLVycsj",
           "skuId": "3333333217",
-          "tranche": "1",
+          "trancheId": "1",
           "value":"1000000"
       }
   }
