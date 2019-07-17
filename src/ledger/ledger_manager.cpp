@@ -561,6 +561,7 @@ namespace bumo {
 		data["name"] = "ledger_manager";
 		data["tx_count"] = GetLastClosedLedger().tx_count();
 		data["account_count"] = GetAccountNum();
+		data["validation_address"] = Configure::Instance().ledger_configure_.validation_random ? "" : Configure::Instance().ledger_configure_.validation_address_;
 		data["ledger_sequence"] = GetLastClosedLedger().seq(); 
 		data["time"] = utils::String::Format(FMT_I64 " ms",
 			(utils::Timestamp::HighResolution() - begin_time) / utils::MICRO_UNITS_PER_MILLI);

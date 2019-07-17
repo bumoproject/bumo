@@ -267,6 +267,9 @@ namespace bumo {
 				return true;
 			}
 
+			else if (s == "--sign-data-with-keystore-list" && argc >4 ) {
+				return SignDataWithKList(argc, argv);
+			}
 			else if (s == "--create-keystore-list") {
 				std::string path = argc > 3 ? argv[2] : "";
 				int nums = argc > 3 ? utils::String::Stoi(argv[3]) : 0;
@@ -599,12 +602,123 @@ namespace bumo {
 			"  --create-keystore-list <path> <nums> <password>               create a number of keystores into path with same password\n"
 			"  --create-keystore-from-privatekey <private key> <password>    create key store from private key\n"
 			"  --sign-data-with-keystore <keystore> <password> <blob data>   sign blob data with keystore\n"
+			"  --sign-data-with-keystore-list <data-file-path> <keystore-dir-path> <start-id> <password>    sign blob data with keystore list\n"
 			"  --check-keystore <keystore> <password>                        check password match the keystore\n"
 			"  --get-privatekey-from-keystore <keystore> <password>          check password match the keystore\n"
 			"  --force-ledger-seq                                            make the ledge-seq equal\n"
 			"  --log-dest <dest>                                             set log dest, LIKE FILE+STDOUT+STDERR\n"
 			"  --help                                                        display this help\n"
 			);
+	}
+
+	bool Argument::SignDataWithKList(int argc, char *argv[]) {
+		std::string data_path = argc > 2 ? argv[2] : "";
+		std::string keystore_dir_path = argc > 3 ? argv[3] : "";
+		int start_id = argc > 4 ? utils::String::Stoi(argv[4]) : 0;
+		std::string password;
+
+		if (5 == argc) {
+			password = utils::GetCinPassword("input the password:");
+			std::cout << std::endl;
+			if (password.empty()) {
+				std::cout << "error, empty" << std::endl;
+				return true;
+			}
+		}
+		else if (6 == argc) {
+			password = argv[5];
+		}
+
+		if (data_path.empty() || keystore_dir_path.empty() || password.empty()) {
+			Usage();
+			return true;
+		}
+
+		//open source file
+		utils::File file_data;
+		if (!file_data.Open(data_path, utils::File::FILE_M_READ | utils::File::FILE_M_BINARY)) {
+			printf("Failed to open file, path:%s\n", data_path.c_str());
+			return true;
+		}
+		std::string data_content;
+		file_data.ReadData(data_content, 1024000);
+
+		//check keystore file path
+		if (!utils::File::IsExist(keystore_dir_path)) {
+			printf("Keystore file not exist, path:%s, make sure the path exists\n", keystore_dir_path.c_str());
+			return true;
+		}
+
+		//retrieve all keystore from directory
+		std::map<int32_t, Json::Value> keystore_list;
+		utils::FileAttributes nFiles;
+		utils::File::GetFileList(keystore_dir_path, nFiles, true);
+		for (utils::FileAttributes::iterator itr = nFiles.begin(); itr != nFiles.end(); itr++) {
+			const std::string &strName = itr->first;
+			utils::FileAttribute &nAttr = itr->second;
+
+			if (nAttr.is_directory_) {
+				continue;
+			}
+
+			size_t line_pos = strName.find("-");
+			if (line_pos == std::string::npos &&  strName.find("wallet") == std::string::npos) {
+				continue;
+			}
+			int32_t id = utils::String::Stoi(strName.substr(0, line_pos));
+			std::string file_content;
+			utils::File file_keystore;
+			std::string dest_file_path = utils::String::Format("%s/%s", keystore_dir_path.c_str(), strName.c_str());
+			if (!file_keystore.Open(dest_file_path, utils::File::FILE_M_READ | utils::File::FILE_M_BINARY)) {
+				printf("Failed to open keystore file, path:%s\n", dest_file_path.c_str());
+				return true;
+			}
+			file_keystore.ReadData(file_content, 10240);
+			Json::Value json_file_content;
+			json_file_content.fromString(file_content);
+			keystore_list[id] = json_file_content;
+		}
+
+
+		//parse from source file
+		Json::Value json_data = Json::Value(Json::objectValue);
+		if (!json_data.fromString(data_content)) {
+			printf("Failed to parse from file, path:%s\n", data_path.c_str());
+			return true;
+		}
+
+		Json::Value &json_items = json_data["items"];
+		for (size_t i = 0; i < json_items.size(); i++) {
+			Json::Value &item = json_items[i];
+			std::string blob_str = item["transaction_blob"].asString();
+			KeyStore keystore;
+			std::string str_priv_key;
+			Json::Value temp_ks = keystore_list[start_id + i];
+			if (!keystore.From(temp_ks, password, str_priv_key)) {
+				printf("Failed to parse from key store file\n");
+				return true;
+			}
+			bumo::PrivateKey priv_key(str_priv_key);
+			std::string sign_data = priv_key.Sign(utils::String::HexStringToBin(blob_str));
+			Json::Value &sign_objs = item["signatures"];
+			Json::Value &sign_obj = sign_objs[sign_objs.size()];
+			sign_obj["public_key"] = priv_key.GetEncPublicKey();
+			sign_obj["sign_data"] = utils::String::BinToHexString(sign_data);
+		}
+
+		//create dest file
+		utils::File file_dest;
+		//compose dest file path
+		size_t dot_pos = data_path.rfind(".");
+		std::string data_dest_path = data_path.insert(dot_pos, "_1");
+		if (!file_dest.Open(data_dest_path, utils::File::FILE_M_WRITE| utils::File::FILE_M_BINARY)) {
+			printf("Failed to open dest file, path:%s\n", data_dest_path.c_str());
+			return true;
+		}
+		std::string str_write = json_data.toFastString();
+		file_dest.Write(str_write.c_str(), str_write.size(), 1);
+
+		return true;
 	}
 
 	void Argument::ShowNodeId(int argc, char *argv[]) {

@@ -40,6 +40,7 @@ namespace bumo {
 		void ShowNodeId(int argc, char *argv[]);
 		void RequestCert(int argc, char *argv[]);
 		void ShowRequest(int argc, char *argv[]);
+		bool SignDataWithKList(int argc, char *argv[]);
 	};
 
 	extern bool g_enable_;
