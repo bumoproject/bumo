@@ -24,7 +24,8 @@ namespace bumo {
 		notify_(NULL),
 		is_validator_(false),
 		replica_id_(-1),
-		private_key_(Configure::Instance().ledger_configure_.validation_privatekey_) {}
+		private_key_(Configure::Instance().ledger_configure_.validation_privatekey_),
+		validation_random(Configure::Instance().ledger_configure_.validation_random) {}
 
 	Consensus::~Consensus() {}
 
