@@ -1083,7 +1083,7 @@ value: {
   id：SPU 的编号，长度[1, 32]。
   name：SPU 名称，长度[1, 1024]。
   type：SPU 类别，长度[1, 64]。
-  attributes：SPU 属性，不可为空。
+  attributes：SPU 属性。
   ```
 
 - 返回值
