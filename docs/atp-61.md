@@ -814,7 +814,8 @@ value: {
     }
   }
   
-  companyName：公司名称，长度[1, 1024]。
+  companyFullName：公司名称全称，长度[1, 1024]。
+  companyShortName：公司名称简称，长度[1, 64]。
   companyContact：公司联系方式，长度[1, 64]。
   companyCertification：公司证件，可扩展字段。
   ```
@@ -887,7 +888,8 @@ value: {
     }
   }
   
-  companyName：公司名称，长度[1, 1024]。
+  companyFullName：公司名称全称，长度[1, 1024]。
+  companyShortName：公司名称简称，长度[1, 64]。
   companyContact：公司联系方式，长度[1, 64]。
   companyCertification：公司证件，可扩展字段，但不可为空。
   ```
