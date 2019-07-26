@@ -1207,7 +1207,7 @@ value: {
   }
   
   id: Tranche 编号，长度[1, 32]。
-  description：Tranche 描述，长度[0, 64K]。
+  descrption：Tranche 描述，长度[0, 64K]。
   limits：Tranche 约束，可为空。
   ```
 
