@@ -1391,6 +1391,7 @@ value: {
   spuId：SPU 的编号，可选，若没有 SPU，可不赋值。
   name：Token 名称。
   symbol：Token 符号。
+  faceValue：面值。前面符号表示单位，后面是数值。
   tokenId：Token 编写，长度 [1, 64]。
   description：SKU 描述。可选。
   mainIcon：主图，长度[1, 10240]。可选

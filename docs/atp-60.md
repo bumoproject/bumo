@@ -1397,6 +1397,7 @@ value: {
   spuId：SPU 的编号，若没有 SPU，可不赋值。
   name：Token 名称。
   symbol：Token 符号。
+  faceValue：面值，前面符号表示单位，后面是数值。
   supply：Token 当前发行量。
   decimals：Token 精度。
   description：SKU 描述。
