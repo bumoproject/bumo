@@ -972,7 +972,7 @@ value: {
   
   id：文档编号。长度[1, 32]。
   name：文档名称。长度[1, 1024]。
-  url：文档链接。长度[1, 20480]。
+  url：文档链接。长度[1, 10240]。
   hashType：哈希类型。长度[1, 64]。
   hash：哈希值。长度[1, 2048]。
   ```
@@ -1200,7 +1200,7 @@ value: {
   }
   
   id: Tranche 编号，长度[1, 32]。
-  descrption：Tranche 描述，长度[0, 64K]。
+  description：Tranche 描述，长度[0, 64K]。
   limits：Tranche 约束，可为空。
   ```
 
