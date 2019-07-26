@@ -121,7 +121,7 @@ const error = {
   },
   SKU_ID_ERR: {
     code: 20023,
-    msg: 'The sku id must be string and its length must be between 1 and 64.'
+    msg: 'The sku id must be string and its length must be between 1 and 32.'
   },
   IS_DFT_TRN_ERR: {
     code: 20024,
@@ -165,7 +165,7 @@ const error = {
   },
   ACP_ID_ERR: {
     code: 20034,
-    msg: 'The length of the acceptanceId must be between 1 and 64.'
+    msg: 'The length of the acceptanceId must be between 1 and 32.'
   },
   SKU_EST: {
     code: 20035,
