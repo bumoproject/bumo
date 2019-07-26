@@ -2642,4 +2642,5 @@ value: {
 | 20080  | The dispute has finished.                                    |
 | 20081  | The sender is not the controller in dispute.                 |
 | 20082  | The controller is invalid.                                   |
+| 20083  | The public key of the acceptor is invalid.                   |
 
