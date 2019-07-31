@@ -84,6 +84,7 @@ namespace bumo {
 		//Operate the ip list
 		int32_t QueryItem(const utils::InetAddress &address, protocol::Peers &records);
 		bool UpdateItem(const utils::InetAddress &address, protocol::Peer &record);
+		bool CheckPeerPoolValid(protocol::Peers &all);
 		int32_t QueryTopItem(bool active, int64_t limit, int64_t next_attempt_time, protocol::Peers &records);
 		bool UpdateItemDisconnect(const utils::InetAddress &address, int64_t conn_id);
 
