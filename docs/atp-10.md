@@ -6,16 +6,13 @@
   - [简介](#简介)
   - [目标](#目标)
   - [Token 属性](#token-属性)
-  - [功能函数](#功能函数)
-    - [transfer](#transfer)
-    - [approve](#approve)
-    - [transferFrom](#transferfrom)
-    - [tokenInfo](#tokeninfo)
-    - [allowance](#allowance)
-  - [合约入口](#合约入口)
-    - [init](#init)
-    - [main](#main)
-    - [query](#query)
+  - [操作过程](#操作过程)
+    - [登记Token](#登记token)
+    - [发行Token](#发行token)
+    - [转移Token](#转移token)
+    - [增发Token](#增发token)
+    - [查询Token](#查询token)
+    - [查询指定metadata](#查询指定metadata)
 
 # 
 

@@ -290,6 +290,8 @@ function addCandidates(roleType, address, proposal, maxSize){
 
     let addition = [address, stake];
     if(roleType === role.VALIDATOR){
+        let node = candidates.find(function(x){ return x[2] === proposal.node; });
+        Utils.assert(node === undefined, proposal.node + ' has already been applied.');
         addition.push(proposal.node);
     }
 
@@ -809,7 +811,7 @@ function setVoteDividend(roleType, pool, ratio){
 }
 
 function clean(operate, item, address){
-    Utils.assert(operateValid(operate), 'Unknown proposal operation:' + operate + '.');
+    Utils.assert(operateValid(operate) || operate === motion.WITHDRAW, 'Unknown proposal operation:' + operate + '.');
     Utils.assert(roleValid(item) || cfg[item] !== undefined, 'Unknown proposal item:' + item + '.');
     Utils.assert(Utils.addressCheck(address),  'Invalid address:' + address + '.');
 

@@ -597,6 +597,8 @@ namespace bumo {
 			}
 		}
 
+		propose_result.tx_execute_count_ = ledger_context->closing_ledger_->GetTxCount();
+
 		if (propose_result.block_timeout_) { //cancel it
 			ledger_context->Cancel();
 			LOG_ERROR("Pre-executing consensus value(" FMT_I64 "ms) timeout", (utils::Timestamp::HighResolution() - time_start) / utils::MICRO_UNITS_PER_MILLI);

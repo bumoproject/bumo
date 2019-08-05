@@ -112,7 +112,7 @@ namespace bumo {
 		const static int TRANSACTION_LOG_TOPIC_MAXSIZE = 128;
 		const static int TRANSACTION_LOG_DATA_MAXSIZE = 1024;
 
-		const static int PEER_DB_COUNT = 5000;
+		const static int PEER_DB_COUNT = 1000;
 
 		const static int64_t REWARD_PERIOD = (5 * 365 * 24 * 60 * 60) / 10;
 		const static int64_t REWARD_INIT_VALUE = 8 * 100000000;

@@ -291,7 +291,7 @@ motion = [
   "pay_coin" :
   {
     "dest_address" : "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss",
-    "amount" :10000000000000,
+    "amount" :300000000000000,
     "input":
     "{
       \"method\":\"apply\",
@@ -307,6 +307,7 @@ motion = [
 ```
 
 申请成功后可以通过[共识节点查询](#共识节点查询)，查询候选共识节点信息。
+
 ### 追加质押金
 
 候选共识节点或候选生态节点可以追加质押金，提高自己的权益排名，追加额必须为[选举配置](#选举配置)中的`vote_unit`配置值的整数倍，否则追加操作将被拒绝。
@@ -363,9 +364,11 @@ motion = [
     }"
   }
 ```
+
 ### 设置投票奖励分配
 
 超级节点调用此接口，可更改投票奖励分配地址和比率。
+
 - 向DPOS合约转账0BU。
 - ‘转移货币’操作的 input 字段填入`{ "method" : "setVoteDividend", "params":{"role":"此处填入超级节点的角色类型", "pool":"此字段填入投票奖励分配地址", "ratio":"此字段填入投票奖励分配比率"}}`,注意使用转义字符。
 
@@ -381,7 +384,7 @@ motion = [
   "pay_coin" :
   {
     "dest_address" : "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss",
-    "amount" :10000000000000,
+    "amount" :0,
     "input":
     "{
       \"method\":\"setVoteDividend\",
@@ -389,7 +392,7 @@ motion = [
       {
         \"role\":\"validator\", 
         \"pool\":\"buQhqMoJziz27DdrS4DaFjeUSspxetAfvpzu\",
-        \"ratio\":90
+        \"ratio\":80
       }
     }"
   }
@@ -909,7 +912,7 @@ motion = [
 {
   "result": {
       "type": "string",
-      "value": "{\"configuration\":{\"committee_size\":100,\"kol_size\":30,\"kol_candidate_size\":300,\"kol_min_pledge\":5000000000000,\"validator_size\":30,\"validator_candidate_size\":300,\"validator_min_pledge\":500000000000000,\"pass_rate\":0.5,\"valid_period\":30000000,\"reward_allocation_share\":[50,6,40,4],\"logic_contract\":\"buQWBw4tMKhj1sPsGmsLmmzXLJUcEy1WjZ2p\"}}"
+      "value": "{\"configuration\":{\"gas_price\":1000,\"base_reserve\":1000000,\"committee_size\":10,\"kol_size\":21,\"kol_candidate_size\":100,\"kol_min_pledge\":300000000000000,\"validator_size\":19,\"validator_candidate_size\":100,\"validator_min_pledge\":300000000000000,\"pledge_magnification\":2,\"pass_rate\":0.5,\"valid_period\":2592000000000,\"vote_unit\":1000000000,\"reward_allocation_share\":[50,8,35,7],\"logic_contract\":\"buQf9SYLbfiCBFHkwNhNAnnFgS2o2AraRxoe\"}}"
   }
 }
 ```
@@ -936,7 +939,7 @@ motion = [
   "pay_coin" :
   {
     "dest_address" : "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss",
-    "amount" :1000000000000,
+    "amount" :300000000000000,
     "input":"{
       \"method\":\"apply\",
       \"params\" : {
@@ -953,7 +956,7 @@ motion = [
 ### 生态节点退出
 
 - 生态节点可通过此操作收回全部押金。退出流程分两步：
-   - 第一步是申请退出，申请成功后，节点地址在候选节点集合中被删除，质押金进入退出锁定期，锁定期为30天。
+  - 第一步是申请退出，申请成功后，节点地址在候选节点集合中被删除，质押金进入退出锁定期，锁定期为30天。
   - 锁定期结束后进入第二步，可以再次发送退出申请，此时锁定期已过，DPOS合约账户将质押金返还原账户。
 - 向DPOS合约转账 0 BU。
 - ‘转移资产’或‘转移货币’操作的 input 字段填入 `{ "method":"withdraw", "params" : {"role":"kol"}}`，注意使用转义字符。
@@ -997,7 +1000,7 @@ motion = [
   "pay_coin" :
   {
     "dest_address" : "buQqzdS9YSnokDjvzg4YaNatcFQfkgXqk6ss",
-    "amount" :100000000,
+    "amount" :1000000000,
     "input":"{
       \"method\":\"vote\",
       \"params\" : {
@@ -1130,7 +1133,7 @@ motion = [
   "result": {
       "type": "string",
       "value": "{\"kols\":[
-        [\"buQB3LtCXfLjtSJKfpaHpykEwDLf43nPxB6z\",\"6000000000000\"],[\"buQZayH6gcAFh5XdgS4tnn8Axrqo1NdutS3p\",\"5500000000000\"],[\"buQaUqDotGNM7htvPR6iHKHBxLGzVpSFkmBM\",\"5500000000000\"]]}"
+        [\"buQB3LtCXfLjtSJKfpaHpykEwDLf43nPxB6z\",\"605000000000000\"],[\"buQZayH6gcAFh5XdgS4tnn8Axrqo1NdutS3p\",\"600000000000000\"],[\"buQaUqDotGNM7htvPR6iHKHBxLGzVpSFkmBM\",\"600000000000000\"]]}"
   }
 }
 ```
@@ -1156,7 +1159,7 @@ motion = [
   "result": {
       "type": "string",
       "value": "{\"kol_candidates\":[
-        [\"buQB3LtCXfLjtSJKfpaHpykEwDLf43nPxB6z\",\"6000000000000\"],[\"buQZayH6gcAFh5XdgS4tnn8Axrqo1NdutS3p\",\"5500000000000\"],[\"buQaUqDotGNM7htvPR6iHKHBxLGzVpSFkmBM\",\"5500000000000\"]]}"
+        [\"buQB3LtCXfLjtSJKfpaHpykEwDLf43nPxB6z\",\"605000000000000\"],[\"buQZayH6gcAFh5XdgS4tnn8Axrqo1NdutS3p\",\"600000000000000\"],[\"buQaUqDotGNM7htvPR6iHKHBxLGzVpSFkmBM\",\"600000000000000\"]]}"
   }
 }
 ```
@@ -1205,6 +1208,7 @@ Reward列表按key-value形式存储
   }
 }
 ```
+
 ## 其他接口
 
 ### 奖励提取
@@ -1212,7 +1216,6 @@ Reward列表按key-value形式存储
 - 任意用户调用此接口可以为指定的地址集合领取区块奖励，如果有领取地址不在奖励收益列表中，则该地址收不到奖励。
 - 向DPOS合约转账0BU。
 - ‘转移资产’或‘转移货币’操作的 input 字段填入 `{ "method":"extract", "params":{"list":[此处填入提取奖励的地址集合]}}`，注意使用转义字符。
-
 
 |参数|描述
 |:--- | ---

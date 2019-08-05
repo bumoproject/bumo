@@ -138,12 +138,21 @@ namespace bumo {
 
 			ProposeTxsResult propose_result;
 			LedgerManager::Instance().context_manager_.SyncPreProcess(propose_value, true, propose_result);
-
 			if (propose_result.block_timeout_) {
-				LOG_ERROR("Block pre-execution timeout, the number of transactions in consensus value is: (" FMT_I64 "), and block number is : (" FMT_I64 ")", txset_raw.txs_size(), propose_value.ledger_seq());
-				//Remove the timeout tx, and reduct to 1/2
+				int64_t total_tx_count = 0;
+				if (propose_result.tx_execute_count_ == 0){
+					total_tx_count = txset_raw.txs_size();
+				}
+				else{
+					total_tx_count = MIN(propose_result.tx_execute_count_, txset_raw.txs_size());
+				}
+
+				//Remove the timeout tx, and reduct to 0.7 with executed count
 				protocol::TransactionEnvSet tmp_raw;
-				for (int32_t i = 0; i < txset_raw.txs_size() / 2; i ++) {
+				int64_t next_tx_size = int64_t(total_tx_count * 0.7 + 0.5);
+				LOG_ERROR("Block pre-execution timeout, the number of transactions in consensus value is: (" FMT_I64 "), and block number is: (" FMT_I64 "), executed tx count: (" FMT_I64 "), next tx count: (" FMT_I64 ")",
+					txset_raw.txs_size(), propose_value.ledger_seq(), propose_result.tx_execute_count_, next_tx_size);
+				for (int32_t i = 0; i < next_tx_size; i++) {
 					*tmp_raw.add_txs() = txset_raw.txs(i);
 				}
 

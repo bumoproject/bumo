@@ -30,11 +30,13 @@ namespace bumo {
 
 	ProposeTxsResult::ProposeTxsResult() :
 		block_timeout_(false),
-		exec_result_(false) {}
+		exec_result_(false),
+		tx_execute_count_(0){}
 
 	ProposeTxsResult::~ProposeTxsResult() {}
 
 	void ProposeTxsResult::SetApply(ProposeTxsResult &result) {
+		tx_execute_count_ = result.tx_execute_count_;
 		exec_result_ = result.exec_result_;
 		cons_validation_ = result.cons_validation_;
 		need_dropped_tx_ = result.need_dropped_tx_;

@@ -32,6 +32,7 @@ namespace bumo {
 
 		bool block_timeout_;
 		bool exec_result_;
+		int64_t tx_execute_count_;
 		protocol::ConsensusValueValidation cons_validation_;
 		std::set<int32_t> need_dropped_tx_;
 

@@ -117,7 +117,7 @@ namespace bumo {
 				continue;
 			}
 
-			if (total_peers_count_ < General::PEER_DB_COUNT) CreatePeerIfNotExist(utils::InetAddress(ip, port));
+			CreatePeerIfNotExist(utils::InetAddress(ip, port));
 		}
 
 		return true;
@@ -136,6 +136,13 @@ namespace bumo {
 		protocol::HelloResponse res;
 
 		do {
+			if (peer->IsActive()){
+				//res.set_error_code(protocol::ERRCODE_INVALID_PARAMETER);
+				res.set_error_desc(utils::String::Format("Peer is active connection with ip(%s), id(" FMT_I64 ")", peer->GetPeerAddress().ToIp().c_str(), peer->GetId()));
+				LOG_ERROR("Failed to process the peer hello message.%s", res.error_desc().c_str());
+				break;
+			}
+
 			peer->SetPeerInfo(hello);
 
 			if (NodeExist(hello.node_address(), peer->GetId())) {
@@ -194,7 +201,7 @@ namespace bumo {
 				peer->SendHello(p2p_configure.listen_port_, peer_node_address_, network_id_, node_rand_, last_ec_);
 
 				//Create
-				if (total_peers_count_ < General::PEER_DB_COUNT) CreatePeerIfNotExist(peer->GetRemoteAddress());
+				CreatePeerIfNotExist(peer->GetRemoteAddress());
 
 				//Asynchronously send peers
 				int64_t peer_id = peer->GetId();
@@ -215,6 +222,8 @@ namespace bumo {
 
 			//Update status
 			protocol::Peer values;
+			values.set_ip(peer->GetRemoteAddress().ToIp());
+			values.set_port(peer->GetRemoteAddress().GetPort());
 			values.set_num_failures(0);
 			values.set_active_time(peer->GetActiveTime());
 			values.set_next_attempt_time(-1);
@@ -480,6 +489,8 @@ namespace bumo {
 
 				protocol::Peer update_values;
 				num_failures++;
+				update_values.set_ip(address.ToIp());
+				update_values.set_port(address.GetPort());
 				update_values.set_next_attempt_time(utils::Timestamp::Now().timestamp() + num_failures * 10 * utils::MICRO_UNITS_PER_SEC);
 				update_values.set_num_failures(num_failures);
 				update_values.set_active_time(-1);
@@ -658,6 +669,10 @@ namespace bumo {
 		}
 
 		if (peer_count == 0 && !address.IsAny()) {
+			if (!CheckPeerPoolValid(all)){
+				return false;
+			}
+			
 			*all.add_peers() = record;
 		} 
 
@@ -668,6 +683,39 @@ namespace bumo {
 		total_peers_count_ = all.peers_size();
 
 		return ret;
+	}
+
+	bool PeerNetwork::CheckPeerPoolValid(protocol::Peers &all){
+		int32_t file_count = Configure::Instance().p2p_configure_.consensus_network_configure_.max_connection_;
+		const size_t max_address_cnt = MAX(file_count, General::PEER_DB_COUNT);
+		//Delete a data whose active_time is not 0,delete 10
+		if (total_peers_count_ < (int32_t)max_address_cnt){
+			return true;
+		}
+		protocol::Peers new_all;
+		int32_t deleted_num = 0;
+		for (int32_t i = 0; i < all.peers_size(); i++) {
+			const protocol::Peer &record = all.peers(i);
+			if (deleted_num > 10) {
+				*new_all.add_peers() = record;
+				continue;
+			}
+
+			if (record.active_time() != 0){
+				*new_all.add_peers() = record;
+				continue;
+			}
+
+			deleted_num++;
+		}
+
+		if (deleted_num == 0){
+			LOG_ERROR("Failed to delete peer pool'ip, cur peers count:%d, db config:%d, file config:%d", total_peers_count_, General::PEER_DB_COUNT, file_count);
+			return false;
+		}
+		all.clear_peers();
+		all = new_all;
+		return true;
 	}
 
 	bool PeerNetwork::UpdateItemDisconnect(const utils::InetAddress &address, int64_t conn_id) {
