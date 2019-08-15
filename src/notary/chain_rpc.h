@@ -40,6 +40,9 @@ namespace bumo {
 		PROPOSAL_NONE = 0,
 		PROPOSAL_SEND = 1,
 		PROPOSAL_RECV = 2,
+		PROPOSAL_OK = 2,
+		PROPOSAL_BACK = 2,
+		PROPOSAL_PRE = 2,
 	};
 
 	struct ProposalInfo{
