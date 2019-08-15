@@ -123,7 +123,6 @@ typedef CRITICAL_SECTION pthread_mutex_t;
 #endif
 
 
-
 namespace utils {
 
 	using namespace std::placeholders; // for std::bind
