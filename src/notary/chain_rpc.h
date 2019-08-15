@@ -8,6 +8,7 @@
 #include <common/private_key.h>
 #include <notary/http_client.h>
 
+
 namespace bumo {
 
 	struct CommContractInfo{
