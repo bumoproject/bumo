@@ -17,6 +17,9 @@ namespace bumo {
 
 	BumoChainRpc::BumoChainRpc(INotifyRpc *notify, const ChainConfigure &config) : BaseChainRpc(notify, config), private_key_(config.private_key_){
 	}
+	
+	BumoChainRpc::BumoChainRpc(){
+	}
 
 	BumoChainRpc::~BumoChainRpc(){
 
