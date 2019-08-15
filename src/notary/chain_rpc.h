@@ -23,6 +23,7 @@ namespace bumo {
 		std::string f_chain_id;
 		std::string t_chain_id;
 		int64_t cur_blockchain_seq;
+		int64_t pre_blockchain_seq;
 
 		void Reset(){
 			recv_notarys.clear();
