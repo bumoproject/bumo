@@ -8,7 +8,6 @@
 #include <common/private_key.h>
 #include <notary/http_client.h>
 
-
 namespace bumo {
 
 	struct CommContractInfo{
@@ -23,11 +22,7 @@ namespace bumo {
 		std::string send_t_comm_addr;
 		std::string f_chain_id;
 		std::string t_chain_id;
-		int64_t down;
-		int64_t up;
-		int64_t come;
-		int64_t out;
-		int64_t in;
+		int64_t cur_blockchain_seq;
 
 		void Reset(){
 			recv_notarys.clear();
