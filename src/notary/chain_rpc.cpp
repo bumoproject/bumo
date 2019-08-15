@@ -29,7 +29,7 @@ namespace bumo {
 			std::string path = utils::String::Format("/getAccountMetaData?address=%s&key=receive_relay", address.c_str());
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("Bumo chain get comm contract info %s error", config_.comm_contract_.c_str());
+				LOG_ERROR("[%s++%s]:Bumo chain get comm contract info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
 				return false;
 			}
 			Json::Value result;
@@ -454,12 +454,12 @@ namespace bumo {
 				paraObj["params"]["seq"] = info.proposal_id;
 				paraObj["params"]["asset_code"] = body["proposals"][Json::UInt(0)]["asset_code"].asString();
 				paraObj["params"]["from"] = body["proposals"][Json::UInt(0)]["from"].asString();
-				paraObj["params"]["to"] = body["proposals"][Json::UInt(0)]["to"].asString();  //TODO ת��Сд
+				paraObj["params"]["to"] = body["proposals"][Json::UInt(0)]["to"].asString();  //TODO ×ª»»Ð¡Ð´
 
 				int32_t op_type = body["proposals"][Json::UInt(0)]["op_type"].asInt();
 				paraObj["params"]["op_type"] = op_type;
 				if (op_type == 1){
-					paraObj["params"]["arg1"] = body["proposals"][Json::UInt(0)]["data"]["t_asset_addr"].asString(); //TODO ת��Сд
+					paraObj["params"]["arg1"] = body["proposals"][Json::UInt(0)]["data"]["t_asset_addr"].asString(); //TODO ×ª»»Ð¡Ð´
 				}
 				else if (op_type == 3){
 					paraObj["params"]["arg1"] = "";
