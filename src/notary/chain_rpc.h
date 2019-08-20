@@ -34,6 +34,22 @@ namespace bumo {
 			send_max_seq = 0;
 			cur_blockchain_seq = 0;
 		}
+
+		Json::Value ToJson(){
+			Json::Value data;
+			data["comm_unique"] = comm_unique;
+			data["recv_finish_seq"] = recv_finish_seq;
+			data["recv_max_seq"] = recv_max_seq;
+			data["send_finish_seq"] = send_finish_seq;
+			data["send_max_seq"] = send_max_seq;
+			data["send_f_comm_addr"] = send_f_comm_addr;
+			data["send_t_comm_addr"] = send_t_comm_addr;
+			data["f_chain_id"] = f_chain_id;
+			data["t_chain_id"] = t_chain_id;
+			data["cur_blockchain_seq"] = cur_blockchain_seq;
+			return data;
+		}
+
 	};
 
 	enum ProposalType{
@@ -50,6 +66,22 @@ namespace bumo {
 		utils::StringVector confirmed_notarys;
 		bool inited_;
 		bool completed_;
+
+		Json::Value ToJson(){
+			Json::Value info;
+			info["type"] = type;
+			info["proposal_id"] = proposal_id;
+			info["proposal_body"] = proposal_body;
+			info["status"] = status;
+			info["inited_"] = inited_;
+			info["completed_"] = completed_;
+			std::string notarys;
+			for (uint32_t i = 0; i < confirmed_notarys.size(); i++){
+				notarys = utils::String::AppendFormat("%s,", confirmed_notarys[i].c_str());
+			}
+
+			return info;
+		}
 	};
 
 	typedef std::vector<ProposalInfo> ProposalInfoVector;
