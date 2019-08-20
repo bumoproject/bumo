@@ -23,7 +23,7 @@ namespace bumo {
 	}
 
 	bool BumoChainRpc::GetCommContractInfo(const std::string &address, CommContractInfo &comm_info){
-		//µ÷È¡ºÏÔ¼²éÑ¯½Ó¿Ú£¬»ñÈ¡ºÏÔ¼·¢ËÍ¶ËĞÅÏ¢
+		//Invoke contract query interface to get contract sender information
 		Json::Value recv_relay_obj;
 		do
 		{
@@ -59,10 +59,10 @@ namespace bumo {
 			send_relay_obj.fromString(result["result"]["send_relay"]["value"].asString());
 		} while (false);
 
-		//½âÎöºÏÔ¼ĞÅÏ¢
+		//è§£æåˆçº¦ä¿¡æ¯
 		comm_info.comm_unique = send_relay_obj["f_chain_id"].asString();
 
-		//recv²ÎÊı
+		//recvå‚æ•°
 		comm_info.recv_finish_seq = recv_relay_obj["complete_seq"].asInt64();
 		comm_info.recv_max_seq = recv_relay_obj["last_seq"].asInt64();
 		const Json::Value &recv_notary_array = send_relay_obj["notary_list"];
@@ -76,7 +76,7 @@ namespace bumo {
 			comm_info.recv_notarys.push_back(recv_notary_array[i].asString());
 		}
 
-		//send²ÎÊı
+		//sendå‚æ•°
 		comm_info.send_finish_seq = send_relay_obj["complete_seq"].asInt64();
 		comm_info.send_max_seq = send_relay_obj["last_seq"].asInt64();
 		const Json::Value &send_notary_array = send_relay_obj["notary_list"];
@@ -105,7 +105,7 @@ namespace bumo {
 	}
 
 	bool BumoChainRpc::GetProposal(const CommContractInfo &comm_info, const std::string &address, ProposalType type, int64_t seq, ProposalInfo &proposal_info){
-		//µ÷È¡ºÏÔ¼²éÑ¯½Ó¿Ú£¬»ñÈ¡ºÏÔ¼ĞÅÏ¢
+		//è°ƒå–åˆçº¦æŸ¥è¯¢æ¥å£ï¼Œè·å–åˆçº¦ä¿¡æ¯
 		std::string path = utils::String::Format("/getAccountMetaData?address=%s&key=", address.c_str());
 		std::string key;
 		if (type == PROPOSAL_SEND){
@@ -143,7 +143,7 @@ namespace bumo {
 			return false;
 		}
 
-		//½âÎöÌá°¸ĞÅÏ¢
+		//è§£æææ¡ˆä¿¡æ¯
 		const Json::Value &arrayObj = proposalBbj["proposals"][Json::UInt(0)]["votes"];
 		for (Json::UInt i = 0; i < arrayObj.size(); i++){
 			proposal_info.confirmed_notarys.push_back(arrayObj[i].asString());
@@ -173,7 +173,7 @@ namespace bumo {
 		trans_obj["operations"] = Json::Value(Json::arrayValue);
 		Json::Value &operations = trans_obj["operations"];
 
-		//´ò°ü²Ù×÷
+		//æ‰“åŒ…æ“ä½œ
 		for (unsigned i = 0; i < proposal_vector.size(); i++){
 			Json::Value opt;
 			opt["type"] = 7;
@@ -217,7 +217,7 @@ namespace bumo {
 		std::string hash = http_result["result"]["hash"].asString();
 		std::string transaction_blob = http_result["result"]["transaction_blob"].asString();
 
-		//¹¹ÔìÇ©Ãû½»Ò×£¬²¢·¢ËÍ½»Ò×
+		//æ„é€ ç­¾åäº¤æ˜“ï¼Œå¹¶å‘é€äº¤æ˜“
 		std::string public_key = private_key_.GetEncPublicKey();
 		std::string sign_data = utils::String::BinToHexString(private_key_.Sign(utils::String::HexStringToBin(transaction_blob)));
 		Json::Value post_trans;
@@ -256,7 +256,7 @@ namespace bumo {
 	}
 
 	void BumoChainRpc::OnTimer(){
-		//»ñÈ¡nonceÖµ
+		//è·å–nonceå€¼
 		std::string path = utils::String::Format("/getAccount?address=%s", config_.notary_address_.c_str());
 		std::string context = HttpGet(PackUrl(path));
 		if (context.empty()){
@@ -292,7 +292,7 @@ namespace bumo {
 	}
 
 	bool EthChainRpc::GetCommContractInfo(const std::string &address, CommContractInfo &comm_info){
-		//µ÷È¡ºÏÔ¼²éÑ¯½Ó¿Ú£¬»ñÈ¡ºÏÔ¼·¢ËÍ¶ËĞÅÏ¢
+		//è°ƒå–åˆçº¦æŸ¥è¯¢æ¥å£ï¼Œè·å–åˆçº¦å‘é€ç«¯ä¿¡æ¯
 		Json::Value com_info_obj;
 		std::string path = utils::String::Format("/queryCommInfo?contract=%s", address.c_str());
 		std::string context = HttpGet(PackUrl(path));
@@ -307,18 +307,18 @@ namespace bumo {
 
 		Json::Value &result = com_info_obj["result"];
 
-		//½âÎöºÏÔ¼ĞÅÏ¢
+		//è§£æåˆçº¦ä¿¡æ¯
 		comm_info.comm_unique = result["f_chain_id"].asString();
 
-		//recv²ÎÊı
+		//recvå‚æ•°
 		comm_info.recv_finish_seq = result["recv_complete_seq"].asInt64();
 		comm_info.recv_max_seq = result["recv_last_seq"].asInt64();
-		comm_info.recv_notarys.clear();//TODO Ôİ²»ÌîĞ´
+		comm_info.recv_notarys.clear();//TODO æš‚ä¸å¡«å†™
 
-		//send²ÎÊı
+		//sendå‚æ•°
 		comm_info.send_finish_seq = result["send_complete_seq"].asInt64();
 		comm_info.send_max_seq = result["send_last_seq"].asInt64();
-		comm_info.send_notarys.clear();//TODO Ôİ²»ÌîĞ´
+		comm_info.send_notarys.clear();//TODO æš‚ä¸å¡«å†™
 
 		comm_info.send_f_comm_addr = result["send_f_comm_addr"].asString();
 		comm_info.send_t_comm_addr = result["send_t_comm_addr"].asString();
@@ -346,7 +346,7 @@ namespace bumo {
 	}
 
 	bool EthChainRpc::GetProposal(const CommContractInfo &comm_info, const std::string &address, ProposalType type, int64_t seq, ProposalInfo &proposal_info){
-		//µ÷È¡ºÏÔ¼²éÑ¯½Ó¿Ú£¬»ñÈ¡ºÏÔ¼ĞÅÏ¢
+		//è°ƒå–åˆçº¦æŸ¥è¯¢æ¥å£ï¼Œè·å–åˆçº¦ä¿¡æ¯
 		Json::Value query_proposal_obj;
 		Json::Value query_proposal_state_obj;
 		do 
@@ -389,9 +389,9 @@ namespace bumo {
 			return false;
 		}
 
-		//½âÎöÌá°¸ĞÅÏ¢
+		//è§£æææ¡ˆä¿¡æ¯
 		if (s_proposal["self_voted"].asInt() == 1){
-			//×Ô¼ºÍ¶¹ıÆ±µÄ£¬½«×Ô¼ºµÄĞÅÏ¢Ìî³ä
+			//è‡ªå·±æŠ•è¿‡ç¥¨çš„ï¼Œå°†è‡ªå·±çš„ä¿¡æ¯å¡«å……
 			proposal_info.confirmed_notarys.push_back(config_.notary_address_);
 		}
 		Json::Value proposal_body_obj;
@@ -439,7 +439,7 @@ namespace bumo {
 
 		proposal_info.inited_ = false;
 		proposal_info.completed_ = false;
-		//Áù¸öÇø¿éÈ·ÈÏ
+		//å…­ä¸ªåŒºå—ç¡®è®¤
 		int64_t inited_block_seq = s_proposal_state["inited_block_seq"].asInt64();
 		if (inited_block_seq > 0 && (comm_info.cur_blockchain_seq - inited_block_seq) >= 6){
 			proposal_info.inited_ = true;
@@ -471,12 +471,12 @@ namespace bumo {
 				paraObj["params"]["seq"] = info.proposal_id;
 				paraObj["params"]["asset_code"] = body["proposals"][Json::UInt(0)]["asset_code"].asString();
 				paraObj["params"]["from"] = body["proposals"][Json::UInt(0)]["from"].asString();
-				paraObj["params"]["to"] = body["proposals"][Json::UInt(0)]["to"].asString();  //TODO ×ª»»Ğ¡Ğ´
+				paraObj["params"]["to"] = body["proposals"][Json::UInt(0)]["to"].asString();  //TODO è½¬æ¢å°å†™
 
 				int32_t op_type = body["proposals"][Json::UInt(0)]["op_type"].asInt();
 				paraObj["params"]["op_type"] = op_type;
 				if (op_type == 1){
-					paraObj["params"]["arg1"] = body["proposals"][Json::UInt(0)]["data"]["t_asset_addr"].asString(); //TODO ×ª»»Ğ¡Ğ´
+					paraObj["params"]["arg1"] = body["proposals"][Json::UInt(0)]["data"]["t_asset_addr"].asString(); //TODO è½¬æ¢å°å†™
 				}
 				else if (op_type == 3){
 					paraObj["params"]["arg1"] = "";
