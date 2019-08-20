@@ -15,12 +15,16 @@ namespace bumo {
 		Configure::GetValue(value, "comm_contract", comm_contract_);
 		Configure::GetValue(value, "notary_address", notary_address_);
 		Configure::GetValue(value, "private_key", private_key_);
+
+		output_data_ = utils::String::Format("[%s]", chain_name_.c_str());
 		return true;
 	}
 
 	bool CommConfigure::Load(const Json::Value &value) {
+		use_output_ = false;
 		Configure::GetValue(value, "use_contract", use_contract_);
 		Configure::GetValue(value, "address", address_);
+		Configure::GetValue(value, "use_output", use_output_);
 		return true;
 	}
 
