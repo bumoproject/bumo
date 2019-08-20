@@ -59,7 +59,7 @@ namespace bumo {
 			send_relay_obj.fromString(result["result"]["send_relay"]["value"].asString());
 		} while (false);
 
-		//解析合约信息
+		//Analysis of Contract Information
 		comm_info.comm_unique = send_relay_obj["f_chain_id"].asString();
 
 		//recv参数
