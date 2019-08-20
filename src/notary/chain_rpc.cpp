@@ -30,7 +30,7 @@ namespace bumo {
 			std::string path = utils::String::Format("/getAccountMetaData?address=%s&key=receive_relay", address.c_str());
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Bumo chain get comm contract info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
+				LOG_ERROR("%s:Bumo chain get comm contract info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 				return false;
 			}
 			Json::Value result;
@@ -47,7 +47,7 @@ namespace bumo {
 			std::string path = utils::String::Format("/getAccountMetaData?address=%s&key=send_relay", address.c_str());
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Bumo chain get comm contract info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
+				LOG_ERROR("%s:Bumo chain get comm contract info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 				return false;
 			}
 
@@ -89,7 +89,7 @@ namespace bumo {
 			std::string path = utils::String::Format("/getLedger");
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Bumo chain get ledger error",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+				LOG_ERROR("%s:Bumo chain get ledger error", config_.output_data_.c_str());
 				return false;
 			}
 
@@ -125,21 +125,21 @@ namespace bumo {
 
 		std::string context = HttpGet(PackUrl(path));
 		if (context.empty()){
-			LOG_TRACE("[%s++%s]:Bumo chain get proposal info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
+			LOG_TRACE("%s:Bumo chain get proposal info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 			return false;
 		}
 
 		Json::Value obj;
 		obj.fromString(context);
 		if (obj["error_code"].size() != 0){
-			LOG_ERROR("[%s++%s]:No proposals, address:%s, result:%s", config_.chain_name_.c_str(),config_.notary_address_.c_str(),address.c_str(), context.c_str());
+			LOG_ERROR("%s:No proposals, address:%s, result:%s", config_.output_data_.c_str(), address.c_str(), context.c_str());
 			return false;
 		}
 
 		Json::Value proposalBbj;
 		proposalBbj.fromString(obj["result"][key]["value"].asString());
 		if (proposalBbj["proposals"].size() <= 0){
-			LOG_TRACE("[%s++%s]:No proposals, address:%s",config_.chain_name_.c_str(),config_.notary_address_.c_str(), address.c_str());
+			//LOG_TRACE("%s:No proposals, address:%s", config_.output_data_.c_str(), address.c_str());
 			return false;
 		}
 
@@ -198,19 +198,19 @@ namespace bumo {
 		std::string input = trans_obj.toFastString();
 		std::string context = HttpPost(PackUrl("/getTransactionBlob"), input);
 		if (context.empty()){
-			LOG_ERROR("[%s++%s]:Bumo chain get getTransactionBlob error",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+			LOG_ERROR("%s:Bumo chain get getTransactionBlob error", config_.output_data_.c_str());
 			return hash_array;
 		}
 
 		Json::Value http_result;
 		http_result.fromString(context);
 		if (!http_result.isMember("error_code")){
-			LOG_ERROR("[%s++%s]:error_code is null",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+			LOG_ERROR("%s:error_code is null", config_.output_data_.c_str());
 			return hash_array;
 		}
 
 		if (http_result["error_code"].asInt() != 0){
-			LOG_ERROR("[%s++%s]:error_code is not 0, %d", config_.chain_name_.c_str(),config_.notary_address_.c_str(),http_result["error_code"].asInt());
+			LOG_ERROR("%s:error_code is not 0, %d", config_.output_data_.c_str(), http_result["error_code"].asInt());
 			return hash_array;
 		}
 
@@ -235,19 +235,19 @@ namespace bumo {
 
 		std::string contextSubmit = HttpPost(PackUrl("/submitTransaction"), post_trans.toFastString());
 		if (contextSubmit.empty()){
-			LOG_ERROR("[%s++%s]:Bumo chain get getTransactionBlob error",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+			LOG_ERROR("%s:Bumo chain get getTransactionBlob error", config_.output_data_.c_str());
 			return hash_array;
 		}
 
 		Json::Value submit_result;
 		submit_result.fromString(contextSubmit);
 		if (!submit_result.isMember("success_count")){
-			LOG_ERROR("[%s++%s]:success_count is null",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+			LOG_ERROR("%s:success_count is null", config_.output_data_.c_str());
 			return hash_array;
 		}
 
 		if (submit_result["success_count"].asInt() <= 0){
-			LOG_ERROR("[%s++%s]:success_count <= 0, %d", config_.chain_name_.c_str(),config_.notary_address_.c_str(),submit_result["success_count"].asInt());
+			LOG_ERROR("%s:success_count <= 0, %d", config_.output_data_.c_str(), submit_result["success_count"].asInt());
 			return hash_array;
 		}
 
@@ -260,14 +260,14 @@ namespace bumo {
 		std::string path = utils::String::Format("/getAccount?address=%s", config_.notary_address_.c_str());
 		std::string context = HttpGet(PackUrl(path));
 		if (context.empty()){
-			LOG_ERROR("[%s++%s]:Bumo chain get getAccount error",config_.chain_name_.c_str(),config_.notary_address_.c_str());
+			LOG_ERROR("%s:Bumo chain get getAccount error", config_.output_data_.c_str());
 			return;
 		}
 
 		Json::Value rpc_result;
 		rpc_result.fromString(context);
 		if (rpc_result["error_code"].asInt() != 0){
-			LOG_ERROR("[%s++%s]:error_code is not 0, %s", config_.chain_name_.c_str(),config_.notary_address_.c_str(),context.c_str());
+			LOG_ERROR("%s:error_code is not 0, %s", config_.output_data_.c_str(), context.c_str());
 			return;
 		}
 
@@ -297,7 +297,7 @@ namespace bumo {
 		std::string path = utils::String::Format("/queryCommInfo?contract=%s", address.c_str());
 		std::string context = HttpGet(PackUrl(path));
 		if (context.empty()){
-			LOG_ERROR("[%s++%s]:Eth chain get comm contract info %s error",config_.chain_name_.c_str(),config_.notary_address_.c_str(), config_.comm_contract_.c_str());
+			LOG_ERROR("%s:Eth chain get comm contract info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 			return false;
 		}
 		com_info_obj.fromString(context);
@@ -331,7 +331,7 @@ namespace bumo {
 			std::string path = utils::String::Format("/queryChainInfo");
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Eth chain get chain info %s error",config_.chain_name_.c_str(),config_.notary_address_.c_str(), config_.comm_contract_.c_str());
+				LOG_ERROR("%s:Eth chain get chain info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 				return false;
 			}
 			blockchain_obj.fromString(context);
@@ -354,12 +354,12 @@ namespace bumo {
 			std::string path = utils::String::Format("/queryProposal?contract=%s&from=%s&proposal_type=%d&seq=" FMT_I64 "", address.c_str(), config_.notary_address_.c_str(), type, seq);
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Bumo chain get comm contract info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
+				LOG_ERROR("%s:Bumo chain get comm contract info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 				return false;
 			}
 			query_proposal_obj.fromString(context);
 			if (query_proposal_obj["error_code"].asInt() != 0){
-				LOG_ERROR("[%s++%s]:Get proposals, error address:%s, result:%s", config_.chain_name_.c_str(),config_.notary_address_.c_str(),address.c_str(), context.c_str());
+				LOG_ERROR("%s:Get proposals, error address:%s, result:%s", config_.output_data_.c_str(), address.c_str(), context.c_str());
 				return false;
 			}
 		} while (false);
@@ -369,12 +369,12 @@ namespace bumo {
 			std::string path = utils::String::Format("/queryProposalState?contract=%s&proposal_type=%d&seq=" FMT_I64 "", address.c_str(), type, seq);
 			std::string context = HttpGet(PackUrl(path));
 			if (context.empty()){
-				LOG_ERROR("[%s++%s]:Bumo chain get comm contract info %s error", config_.chain_name_.c_str(),config_.notary_address_.c_str(),config_.comm_contract_.c_str());
+				LOG_ERROR("%s:Bumo chain get comm contract info %s error", config_.output_data_.c_str(), config_.comm_contract_.c_str());
 				return false;
 			}
 			query_proposal_state_obj.fromString(context);
 			if (query_proposal_state_obj["error_code"].asInt() != 0){
-				LOG_ERROR("[%s++%s]:Get proposals state, error address:%s, result:%s", config_.chain_name_.c_str(),config_.notary_address_.c_str(),address.c_str(), context.c_str());
+				LOG_ERROR("%s:Get proposals state, error address:%s, result:%s", config_.output_data_.c_str(), address.c_str(), context.c_str());
 				return false;
 			}
 		} while (false);
@@ -510,14 +510,14 @@ namespace bumo {
 		std::string path = utils::String::Format("/%s", api.c_str());
 		std::string contextSubmit = HttpPost(PackUrl(path), paras);
 		if (contextSubmit.empty()){
-			LOG_ERROR("[%s++%s]:Eth chain get getTransactionBlob error", config_.chain_name_.c_str(), config_.notary_address_.c_str());
+			LOG_ERROR("%s:Eth chain get getTransactionBlob error", config_.output_data_.c_str());
 			return "";
 		}
 
 		Json::Value submit_result;
 		submit_result.fromString(contextSubmit);
 		if (submit_result["error_code"].asInt() != 0){
-			LOG_ERROR("[%s++%s]:submit result error, post data:(%s), result:(%s)",config_.chain_name_.c_str(),config_.notary_address_.c_str(), paras.c_str(), contextSubmit.c_str());
+			LOG_ERROR("%s:submit result error, post data:(%s), result:(%s)", config_.output_data_.c_str(), paras.c_str(), contextSubmit.c_str());
 			return "";
 		}
 
