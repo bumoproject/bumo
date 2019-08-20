@@ -174,7 +174,7 @@ namespace bumo {
 		trans_obj["operations"] = Json::Value(Json::arrayValue);
 		Json::Value &operations = trans_obj["operations"];
 
-		//打包操作
+		//Build a package
 		for (unsigned i = 0; i < proposal_vector.size(); i++){
 			Json::Value opt;
 			opt["type"] = 7;
