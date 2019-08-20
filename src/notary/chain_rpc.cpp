@@ -62,7 +62,7 @@ namespace bumo {
 		//Analysis of Contract Information
 		comm_info.comm_unique = send_relay_obj["f_chain_id"].asString();
 
-		//recv参数
+		//recv parameter
 		comm_info.recv_finish_seq = recv_relay_obj["complete_seq"].asInt64();
 		comm_info.recv_max_seq = recv_relay_obj["last_seq"].asInt64();
 		const Json::Value &recv_notary_array = send_relay_obj["notary_list"];
@@ -76,7 +76,7 @@ namespace bumo {
 			comm_info.recv_notarys.push_back(recv_notary_array[i].asString());
 		}
 
-		//send参数
+		//send parameter
 		comm_info.send_finish_seq = send_relay_obj["complete_seq"].asInt64();
 		comm_info.send_max_seq = send_relay_obj["last_seq"].asInt64();
 		const Json::Value &send_notary_array = send_relay_obj["notary_list"];
