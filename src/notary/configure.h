@@ -17,6 +17,8 @@ namespace bumo {
 		std::string notary_address_;
 		std::string private_key_;
 
+		std::string output_data_;
+
 		bool Load(const Json::Value &value);
 	};
 
@@ -27,6 +29,7 @@ namespace bumo {
 
 		bool use_contract_;
 		std::string address_;
+		bool use_output_;
 
 		bool Load(const Json::Value &value);
 	};
