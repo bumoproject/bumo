@@ -33,11 +33,29 @@ namespace bumo {
 				max_seq = -1;
 				affirm_max_seq = -1;
 			}
+
+			Json::Value ToJson(){
+				Json::Value data;
+				data["max_seq"] = max_seq;
+				data["affirm_max_seq"] = affirm_max_seq;
+				data["proposal_map"] = Json::Value(Json::arrayValue);
+				Json::Value &proposal_map = data["proposal_map"];;
+				for (auto itr = proposal_info_map.begin(); itr != proposal_info_map.end(); itr++){
+					Json::Value proposal;
+					proposal["seq"] = itr->first;
+					proposal["proposal"] = itr->second.ToJson();
+					proposal_map[proposal_map.size()] = proposal;
+				}
+
+				return data;
+			}
+
 		}ProposalRecord;
 
 		void ResetChainInfo() {
 			send_record_.Reset();
 			recv_record_.Reset();
+			comm_info_.Reset();
 			error_tx_times_ = -1;
 			tx_history_.clear();
 			memset(&recv_notary_list_, 0, sizeof(recv_notary_list_));
@@ -48,6 +66,9 @@ namespace bumo {
 		void OnSlowTimer(int64_t current_time);
 		void OnFastTimer(int64_t current_time);
 		bool GetProposalInfo(ProposalType type, int64_t seq, ProposalInfo &info);
+		std::string GetChainName();
+
+		Json::Value ToJson();
 
 	private:
 		//事件处理
