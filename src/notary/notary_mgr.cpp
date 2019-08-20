@@ -4,6 +4,7 @@
 #include <common/general.h>
 #include <notary/configure.h>
 #include <notary/notary_mgr.h>
+#include <utils/file.h>
 
 const int64_t max_submit_nums = 3;
 
@@ -54,17 +55,36 @@ namespace bumo {
 		ProposalRecord *record = GetProposalRecord(type);
 		auto itr_info = record->proposal_info_map.find(seq);
 		if (itr_info == record->proposal_info_map.end()){
-			if (!chain_rpc_->GetProposal(comm_info_, chain_config_.comm_contract_, type, seq, info)){
+			if (!GetProposal(type, seq)){
 				return false;
 			}
+
+			ProposalRecord *second_record = GetProposalRecord(type);
+			auto second_itr_info = second_record->proposal_info_map.find(seq);
+			if (second_itr_info == second_record->proposal_info_map.end()){
+				LOG_ERROR("%s:Error for find proposal:" FMT_I64 ", type:%d", chain_config_.output_data_.c_str(), seq, type);
+				return false;
+			}
+			info = second_itr_info->second;
 			return true;
 		}
 		info = itr_info->second;
 		return true;
 	}
 
+	std::string ChainObj::GetChainName(){
+		return chain_config_.chain_name_;
+	}
+
+	Json::Value ChainObj::ToJson(){
+		Json::Value data;
+		data["comm_info"] = comm_info_.ToJson();
+		data["send"] = send_record_.ToJson();
+		data["recv"] = recv_record_.ToJson();
+		return data;
+	}
+
 	void ChainObj::RequestCommContractInfo(){
-		comm_info_.Reset();
 		if (!chain_rpc_->GetCommContractInfo(chain_config_.comm_contract_, comm_info_)){
 			return;
 		}
@@ -111,7 +131,7 @@ namespace bumo {
 			proposal->affirm_max_seq = MAX(proposal_info.proposal_id, proposal->affirm_max_seq);
 		}
 
-		LOG_TRACE("[%s++%s]:Recv proposal type:%d, id:" FMT_I64 ", status:%d ", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),proposal_info.type, proposal_info.proposal_id, proposal_info.status);
+		LOG_TRACE("%s,Recv proposal type:%d, id:" FMT_I64 ", status:%d ", chain_config_.output_data_.c_str(), proposal_info.type, proposal_info.proposal_id, proposal_info.status);
 		return true;
 	}
 
@@ -127,7 +147,7 @@ namespace bumo {
 			return;
 		}
 		error_tx_times_++;
-		LOG_ERROR("[%s++%s]:Failed to Do Transaction,tx hash is %s,err_code is %d",chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(), hash.c_str(), code);
+		LOG_ERROR("%s:Failed to Do Transaction,tx hash is %s,err_code is %d", chain_config_.output_data_.c_str(), hash.c_str(), code);
 	}
 
 	void ChainObj::RequestProposal(ProposalType type){
@@ -161,7 +181,7 @@ namespace bumo {
 			get_peer_type = ProposalType::PROPOSAL_SEND;
 		}
 		else{
-			LOG_ERROR("[%s++%s]:Unknown proposal type.",chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str());
+			LOG_ERROR("%s:Unknown proposal type.", chain_config_.output_data_.c_str());
 			return;
 		}
 
@@ -187,23 +207,23 @@ namespace bumo {
 		//当获取对端为send时候，需要保证其状态非ok状态
 		if (peer_type == ProposalType::PROPOSAL_SEND){
 			if (vote_proposal.status == EXECUTE_STATE_SUCCESS || vote_proposal.status == EXECUTE_STATE_FAIL){
-				LOG_INFO("[%s++%s]:If peers' output is sucess or fail, ignore it.%d", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),vote_proposal.status);
+				LOG_INFO("%s:If peers' output is sucess or fail, ignore it.%d", chain_config_.output_data_.c_str(), vote_proposal.status);
 				return false;
 			}
 			if (!vote_proposal.inited_){
-				LOG_INFO("[%s++%s]:Peers' send proposal is waiting 6 blocks for init. seq:" FMT_I64 "", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),next_proposal_seq);
+				LOG_INFO("%s:Peers' send proposal is waiting 6 blocks for init. seq:" FMT_I64 "", chain_config_.output_data_.c_str(), next_proposal_seq);
 				return false;
 			}
 		}
 		//当获取对端为recv时候，需要保证其状态为成功状态或者失败状态
 		else if (peer_type == ProposalType::PROPOSAL_RECV){
 			if (vote_proposal.status == EXECUTE_STATE_INITIAL || vote_proposal.status == EXECUTE_STATE_PROCESSING){
-				LOG_INFO("[%s++%s]:If peers' input is init or processing, ignore it, status:%d", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),vote_proposal.status);
+				LOG_INFO("%s:If peers' input is init or processing, ignore it, status:%d", chain_config_.output_data_.c_str(), vote_proposal.status);
 				return false;
 			}
 
 			if (!vote_proposal.completed_){
-				LOG_INFO("[%s++%s]:Peers' send proposal is waiting 6 blocks for completed. seq:" FMT_I64 "", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),next_proposal_seq);
+				LOG_INFO("%s:Peers' send proposal is waiting 6 blocks for completed. seq:" FMT_I64 "", chain_config_.output_data_.c_str(), next_proposal_seq);
 				return false;
 			}
 
@@ -238,7 +258,7 @@ namespace bumo {
 		utils::StringVector hash_vector = chain_rpc_->CommitVotedProposals(proposal_info_vector_);
 		if (!hash_vector.empty()){
 			for (uint32_t i = 0; i < hash_vector.size(); i++){
-				LOG_INFO("[%s++%s]:CommitVotingProposals hash :%s", chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(),hash_vector[i].c_str());
+				LOG_INFO("%s:CommitVotingProposals hash :%s", chain_config_.output_data_.c_str(), hash_vector[i].c_str());
 			}
 		}
 		
@@ -254,7 +274,7 @@ namespace bumo {
 			record = &recv_record_;
 		}
 		else{
-			LOG_ERROR("[%s++%s]:Canot find proposal, type:%d",chain_config_.chain_name_.c_str(),chain_config_.notary_address_.c_str(), type);
+			LOG_ERROR("%s:Canot find proposal, type:%d", chain_config_.output_data_.c_str(), type);
 		}
 		return record;
 	}
@@ -299,10 +319,31 @@ namespace bumo {
 			chain_obj_vector_[i]->OnFastTimer(current_time);
 		}
 
-		//12秒提交提案
+		//12秒提交提案，并输出日志到文件
 		if (update_times_ % 4 == 0){
+			LOG_INFO("On timer for heartbeat ..");
 			for (uint32_t i = 0; i < chain_obj_vector_.size(); i++){
 				chain_obj_vector_[i]->OnSlowTimer(current_time);
+			}
+			if (bumo::Configure::Instance().comm_config_.use_output_){
+				Json::Value debug;
+				for (uint32_t i = 0; i < chain_obj_vector_.size(); i++){
+					debug[chain_obj_vector_[i]->GetChainName()] = chain_obj_vector_[i]->ToJson();
+				}
+
+				std::string output_data = debug.toFastString();
+				std::string output_file = utils::String::Format("%s/debug-output", utils::File::GetBinHome().c_str());
+				if (utils::File::IsExist(output_file)){
+					utils::File::Delete(output_file);
+				}
+				utils::File file;
+				if (!file.Open(output_file, utils::File::FILE_M_WRITE | utils::File::FILE_M_TEXT)){
+					LOG_ERROR("Open output file error!");
+					return;
+				}
+
+				file.Write(output_data.data(), 1, output_data.size());
+				file.Close();
 			}
 		}
 	}
