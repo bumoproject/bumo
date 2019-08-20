@@ -105,7 +105,7 @@ namespace bumo {
 	}
 
 	bool BumoChainRpc::GetProposal(const CommContractInfo &comm_info, const std::string &address, ProposalType type, int64_t seq, ProposalInfo &proposal_info){
-		//调取合约查询接口，获取合约信息
+		// Invoke contract query interface to obtain contract information
 		std::string path = utils::String::Format("/getAccountMetaData?address=%s&key=", address.c_str());
 		std::string key;
 		if (type == PROPOSAL_SEND){
