@@ -143,7 +143,8 @@ namespace bumo {
 			return false;
 		}
 
-		//解析提案信息
+		
+                // Analysis of Proposal Information
 		const Json::Value &arrayObj = proposalBbj["proposals"][Json::UInt(0)]["votes"];
 		for (Json::UInt i = 0; i < arrayObj.size(); i++){
 			proposal_info.confirmed_notarys.push_back(arrayObj[i].asString());
