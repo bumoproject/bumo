@@ -15,6 +15,7 @@ namespace bumo {
 		chain_rpc_ = CreateChainRpc(this, config);
 	}
 
+
 	ChainObj::~ChainObj(){
 
 	}
