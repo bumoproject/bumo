@@ -23,7 +23,6 @@ namespace bumo {
 	}
 
 	bool BumoChainRpc::GetCommContractInfo(const std::string &address, CommContractInfo &comm_info){
-		//Invoke contract query interface to get contract sender information
 		Json::Value recv_relay_obj;
 		do
 		{
