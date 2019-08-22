@@ -23,6 +23,7 @@
 #include <notary/configure.h>
 #include <notary/http_client.h>
 
+
 void SaveWSPort();
 void RunLoop();
 
