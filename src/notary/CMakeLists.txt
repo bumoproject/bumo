@@ -10,6 +10,7 @@ set(APP_BUMO_SRC
 	notary_mgr.cpp
 )
 
+
 set(INNER_LIBS bumo_common bumo_utils bumo_proto)
 
 #Generate executable files
