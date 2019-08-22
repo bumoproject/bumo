@@ -14,10 +14,8 @@ std::string HttpGet(std::string url){
 		return "";
 	}
 
-	// Set url
 	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-	// Set callback on receiving data
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
 	curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
 	curl_easy_setopt(curl, CURLOPT_TIMEOUT, 15);
