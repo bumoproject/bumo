@@ -34,7 +34,7 @@ namespace bumo {
 		//Reset
 		ResetChainInfo();
 
-		//ÇëÇóÍ¨ĞÅºÏÔ¼µÄĞÅÏ¢
+		//è¯·æ±‚é€šä¿¡åˆçº¦çš„ä¿¡æ¯
 		RequestCommContractInfo();
 
 		//Get the latest send list and sort outmap
@@ -90,7 +90,7 @@ namespace bumo {
 			return;
 		}
 
-		//±£´æ·¢ËÍ¶Ë¹«Ö¤ÈËÁĞ±í
+		//ä¿å­˜å‘é€ç«¯å…¬è¯äººåˆ—è¡¨
 		if (comm_info_.recv_notarys.size() >= 100){
 			LOG_ERROR("Notary nums is no more than 100");
 			return;
@@ -100,7 +100,7 @@ namespace bumo {
 			memcpy(&recv_notary_list_[i], comm_info_.recv_notarys[i].data(), comm_info_.recv_notarys[i].size());
 		}
 
-		//±£´æ½ÓËÍ¶Ë¹«Ö¤ÈËÁĞ±í
+		//ä¿å­˜æ¥é€ç«¯å…¬è¯äººåˆ—è¡¨
 		if (comm_info_.send_notarys.size() >= 100){
 			LOG_ERROR("Notary nums is no more than 100");
 			return;
@@ -110,7 +110,7 @@ namespace bumo {
 			memcpy(&send_notary_list_[i], comm_info_.send_notarys[i].data(), comm_info_.send_notarys[i].size());
 		}
 
-		//±£´æ×î´óÈ·ÈÏĞòºÅºÍ×î´óĞòºÅ
+		//ä¿å­˜æœ€å¤§ç¡®è®¤åºå·å’Œæœ€å¤§åºå·
 		recv_record_.affirm_max_seq = MAX(recv_record_.affirm_max_seq, comm_info_.recv_finish_seq);
 		recv_record_.max_seq = MAX(recv_record_.max_seq, comm_info_.recv_max_seq);
 
@@ -158,6 +158,7 @@ namespace bumo {
 		if (max_nums <= 0){
 			max_nums = 1;
 		}
+		//å¾ªç¯å¤„ç†
 		for (int64_t i = 1; i <= max_nums; i++){
 			int64_t seq = record->affirm_max_seq + i;
 			if (!GetProposal(type, seq)){
@@ -167,7 +168,7 @@ namespace bumo {
 	}
 
 	void ChainObj::CheckTxError(){
-		//TODO ´¦ÀíÒì³£µÄ½»Ò×
+		//TODO å¤„ç†å¼‚å¸¸çš„äº¤æ˜“
 	}
 
 	void ChainObj::CreateVotingProposals(ProposalType type){
@@ -198,14 +199,14 @@ namespace bumo {
 
 	bool ChainObj::BuildSingleVoting(ProposalType type, const ProposalRecord &record, ProposalType peer_type, int64_t next_proposal_seq){
 		ProposalInfo vote_proposal;
-		//ÏÈ»ñÈ¡¶Ô¶ËÁĞ±í
+		//å…ˆè·å–å¯¹ç«¯åˆ—è¡¨
 		if (!peer_chain_->GetProposalInfo(peer_type, next_proposal_seq, vote_proposal)){
-			//²»´æÔÚÔÚÖ±½Ó·µ»Ø
+			//ä¸å­˜åœ¨åœ¨ç›´æ¥è¿”å›
 			//LOG_INFO("Chain %s,no proposl from peer type :%d", comm_unique_.c_str(), peer_type);
 			return false;
 		}
 
-		//µ±»ñÈ¡¶Ô¶ËÎªsendÊ±ºò£¬ĞèÒª±£Ö¤Æä×´Ì¬·Çok×´Ì¬
+		//å½“è·å–å¯¹ç«¯ä¸ºsendæ—¶å€™ï¼Œéœ€è¦ä¿è¯å…¶çŠ¶æ€éokçŠ¶æ€
 		if (peer_type == ProposalType::PROPOSAL_SEND){
 			if (vote_proposal.status == EXECUTE_STATE_SUCCESS || vote_proposal.status == EXECUTE_STATE_FAIL){
 				LOG_INFO("%s:If peers' output is sucess or fail, ignore it.%d", chain_config_.output_data_.c_str(), vote_proposal.status);
@@ -216,7 +217,7 @@ namespace bumo {
 				return false;
 			}
 		}
-		//µ±»ñÈ¡¶Ô¶ËÎªrecvÊ±ºò£¬ĞèÒª±£Ö¤Æä×´Ì¬Îª³É¹¦×´Ì¬»òÕßÊ§°Ü×´Ì¬
+		//å½“è·å–å¯¹ç«¯ä¸ºrecvæ—¶å€™ï¼Œéœ€è¦ä¿è¯å…¶çŠ¶æ€ä¸ºæˆåŠŸçŠ¶æ€æˆ–è€…å¤±è´¥çŠ¶æ€
 		else if (peer_type == ProposalType::PROPOSAL_RECV){
 			if (vote_proposal.status == EXECUTE_STATE_INITIAL || vote_proposal.status == EXECUTE_STATE_PROCESSING){
 				LOG_INFO("%s:If peers' input is init or processing, ignore it, status:%d", chain_config_.output_data_.c_str(), vote_proposal.status);
@@ -230,11 +231,11 @@ namespace bumo {
 
 		}
 
-		//ÔÙÅĞ¶Ï×Ô¼ºÌá°¸ÁĞ±í
+		//å†åˆ¤æ–­è‡ªå·±ææ¡ˆåˆ—è¡¨
 		const ProposalInfoMap &proposal_info_map = record.proposal_info_map;
 		auto itr = proposal_info_map.find(next_proposal_seq);
 		if (itr != proposal_info_map.end()){
-			//Èç¹û´æÔÚÔòÅĞ¶Ï×Ô¼ºÊÇ·ñÍ¶¹ıÆ±£¬Í¶¹ıÆ±ÔòºöÂÔ´¦Àí
+			//å¦‚æœå­˜åœ¨åˆ™åˆ¤æ–­è‡ªå·±æ˜¯å¦æŠ•è¿‡ç¥¨ï¼ŒæŠ•è¿‡ç¥¨åˆ™å¿½ç•¥å¤„ç†
 			const ProposalInfo &proposal = itr->second;
 			for (uint32_t i = 0; i < proposal.confirmed_notarys.size(); i++){
 				if (proposal.confirmed_notarys[i] == chain_config_.notary_address_){
@@ -243,7 +244,7 @@ namespace bumo {
 			}
 		}
 
-		//¸Ä±äÌá°¸×´Ì¬ÀàĞÍ£¬±£´æÌá°¸¶ÓÁĞ¡£
+		//æ”¹å˜ææ¡ˆçŠ¶æ€ç±»å‹ï¼Œä¿å­˜ææ¡ˆé˜Ÿåˆ—ã€‚
 		vote_proposal.type = type;
 		vote_proposal.confirmed_notarys.clear();
 
@@ -315,12 +316,12 @@ namespace bumo {
 		last_update_time_ = current_time;
 		update_times_++;
 
-		//3Ãë¸üĞÂ×´Ì¬
+		//3ç§’æ›´æ–°çŠ¶æ€
 		for (uint32_t i = 0; i < chain_obj_vector_.size(); i++){
 			chain_obj_vector_[i]->OnFastTimer(current_time);
 		}
 
-		//12ÃëÌá½»Ìá°¸£¬²¢Êä³öÈÕÖ¾µ½ÎÄ¼ş
+		//12ç§’æäº¤ææ¡ˆï¼Œå¹¶è¾“å‡ºæ—¥å¿—åˆ°æ–‡ä»¶
 		if (update_times_ % 4 == 0){
 			LOG_INFO("On timer for heartbeat ..");
 			for (uint32_t i = 0; i < chain_obj_vector_.size(); i++){
