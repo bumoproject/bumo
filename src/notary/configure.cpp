@@ -41,7 +41,7 @@ namespace bumo {
 		comm_config_.Load(values["comm_config"]);
 
 		logger_configure_.Load(values["logger"]);
-
+		//BU chain && ETH chain
 		ChainConfigure chain1;
 		chain1.Load(values["chain_1"]);
 		ChainConfigure chain2;
