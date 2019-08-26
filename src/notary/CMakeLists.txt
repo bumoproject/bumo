@@ -13,6 +13,7 @@ set(APP_BUMO_SRC
 
 set(INNER_LIBS bumo_common bumo_utils bumo_proto)
 
+
 #Generate executable files
 add_executable(${APP_BUMO} ${APP_BUMO_SRC})
 
