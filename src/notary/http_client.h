@@ -6,6 +6,6 @@
 
 std::string HttpGet(std::string url);
 
-std::string HttpPost(const std::string &url, const std::string &post_data);
+std::string HttpPost(const std::string &url_address, const std::string &post_data);
 
 #endif
