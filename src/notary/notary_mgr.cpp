@@ -43,7 +43,6 @@ namespace bumo {
 		//Get the latest recv list and sort the inputmap
 		RequestProposal(ProposalType::PROPOSAL_RECV);
 
-		//Check the number of tx errors
 		CheckTxError();
 	}
 
