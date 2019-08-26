@@ -7,7 +7,6 @@ size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
 
 std::string HttpGet(std::string url){
 	std::string response_string;
-	// Get a curl object
 	CURL *curl = curl_easy_init();
 	if (!curl) {
 		fprintf(stderr, "curl_easy_init() failed\n");
