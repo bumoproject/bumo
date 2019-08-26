@@ -6,7 +6,6 @@
 #include <proto/cpp/chain.pb.h>
 
 namespace bumo {
-	//constructor function
 	BaseChainRpc::BaseChainRpc(INotifyRpc *notify, const ChainConfigure &config){
 		notify_ = notify;
 		config_ = config;
