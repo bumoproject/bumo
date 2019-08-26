@@ -124,7 +124,7 @@ namespace bumo {
 		std::string PackUrl(const std::string &path);
 	};
 
-
+	//ETH RPC
 	class EthChainRpc : public BaseChainRpc{
 	public:
 		EthChainRpc(INotifyRpc *notify, const ChainConfigure &config);
