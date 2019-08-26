@@ -36,6 +36,8 @@ namespace bumo {
 
 	typedef std::map<std::string, ChainConfigure> ChainMap;
 
+	//congfig
+
 	class Configure : public ConfigureBase, public utils::Singleton<Configure> {
 		friend class utils::Singleton<Configure>;
 		Configure(){}
