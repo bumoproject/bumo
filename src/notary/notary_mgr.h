@@ -15,7 +15,7 @@ namespace bumo {
 		EXECUTE_STATE_FAIL = 3,
 		EXECUTE_STATE_SUCCESS = 4
 	};
-
+	//Chain Obj from notify rpc
 	class ChainObj : public INotifyRpc{
 	public:
 		ChainObj(const ChainConfigure &config);
@@ -71,10 +71,10 @@ namespace bumo {
 		Json::Value ToJson();
 
 	private:
-		//事件处理
+		//HandleTxResult 
 		virtual void HandleTxResult(const std::string &hash, int32_t code) override;
 
-		//内部函数处理
+		//inside function
 		void RequestCommContractInfo();
 		void RequestProposal(ProposalType type);
 		void CheckTxError();
