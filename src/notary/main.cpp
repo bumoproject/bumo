@@ -14,19 +14,6 @@ void RunLoop();
 
 int main(int argc, char *argv[]){
 
-	//for (int i = 0; i <= 1000; i++){
-	//	std::string result_1 = HttpPost("http://52.80.81.176:11111/callContract", "123");
-	//	std::string result_2 = HttpGet("http://52.80.81.176:11111/getAccount?address=buQnZpHB7sSW2hTG9eFefYpeCVDufMdmmsBF");
-	//	if (result_1.empty() || result_2.empty()){
-	//		printf("\n");
-	//	}
-	//}
-
-	//
-	//return 0;
-
-
-
 #ifdef WIN32
 	_set_output_format(_TWO_DIGIT_EXPONENT);
 #else
