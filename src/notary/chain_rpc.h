@@ -107,6 +107,7 @@ namespace bumo {
 		ChainConfigure config_;
 	};
 
+	//bumo chain rpc
 	class BumoChainRpc : public BaseChainRpc{
 	public:
 		BumoChainRpc(INotifyRpc *notify, const ChainConfigure &config);
