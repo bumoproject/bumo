@@ -217,7 +217,7 @@ namespace bumo {
 		std::string hash = http_result["result"]["hash"].asString();
 		std::string transaction_blob = http_result["result"]["transaction_blob"].asString();
 
-		//构造签名交易，并发送交易
+		//build chain tx
 		std::string public_key = private_key_.GetEncPublicKey();
 		std::string sign_data = utils::String::BinToHexString(private_key_.Sign(utils::String::HexStringToBin(transaction_blob)));
 		Json::Value post_trans;
