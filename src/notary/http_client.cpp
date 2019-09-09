@@ -5,6 +5,7 @@ size_t writeFunction(void *ptr, size_t size, size_t nmemb, std::string* data) {
 	return size * nmemb;
 }
 
+//http client for get
 std::string HttpGet(std::string url){
 	std::string response_string;
 	CURL *curl = curl_easy_init();
@@ -34,6 +35,7 @@ struct PostData {
 	size_t size;
 };
 
+//http client for post
 std::string HttpPost(const std::string &url, const std::string &postData){
 
 	std::string response_string;
