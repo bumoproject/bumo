@@ -9,6 +9,7 @@
 
 namespace bumo {
 	bool ChainConfigure::Load(const Json::Value &value) {
+		//Chain config load
 		Configure::GetValue(value, "comm_unique", comm_unique_);
 		Configure::GetValue(value, "rpc_address", rpc_address_);
 		Configure::GetValue(value, "chain_name", chain_name_);
