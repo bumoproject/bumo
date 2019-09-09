@@ -34,7 +34,7 @@ namespace bumo {
 		//Reset
 		ResetChainInfo();
 
-		//请求通信合约的信息
+		//request comm info
 		RequestCommContractInfo();
 
 		//Get the latest send list and sort outmap
@@ -89,7 +89,7 @@ namespace bumo {
 			return;
 		}
 
-		//保存发送端公证人列表
+		//save recv notary list
 		if (comm_info_.recv_notarys.size() >= 100){
 			LOG_ERROR("Notary nums is no more than 100");
 			return;
@@ -99,7 +99,7 @@ namespace bumo {
 			memcpy(&recv_notary_list_[i], comm_info_.recv_notarys[i].data(), comm_info_.recv_notarys[i].size());
 		}
 
-		//保存接送端公证人列表
+		//save send notary list
 		if (comm_info_.send_notarys.size() >= 100){
 			LOG_ERROR("Notary nums is no more than 100");
 			return;
@@ -109,7 +109,7 @@ namespace bumo {
 			memcpy(&send_notary_list_[i], comm_info_.send_notarys[i].data(), comm_info_.send_notarys[i].size());
 		}
 
-		//保存最大确认序号和最大序号
+		//save max record
 		recv_record_.affirm_max_seq = MAX(recv_record_.affirm_max_seq, comm_info_.recv_finish_seq);
 		recv_record_.max_seq = MAX(recv_record_.max_seq, comm_info_.recv_max_seq);
 
@@ -157,7 +157,7 @@ namespace bumo {
 		if (max_nums <= 0){
 			max_nums = 1;
 		}
-		//循环处理
+		//deal
 		for (int64_t i = 1; i <= max_nums; i++){
 			int64_t seq = record->affirm_max_seq + i;
 			if (!GetProposal(type, seq)){
