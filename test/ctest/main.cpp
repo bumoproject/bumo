@@ -2,8 +2,7 @@
 #include <utils/net.h>
 #include <utils/logger.h>
 
-GTEST_API_ int main(int argc, char **argv)
-{
+GTEST_API_ int main(int argc, char **argv){
 	utils::net::Initialize();
 	utils::Logger::InitInstance();
 	utils::Logger &logger = utils::Logger::Instance();

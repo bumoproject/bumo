@@ -32,8 +32,6 @@ bubi::PrivateKey *ApiTest::priv_key_ = NULL;
 bubi::HttpClient *ApiTest::http_ = NULL;
 Json::Value GetTransactionJson(bubi::PrivateKey & prv){
 	
-	
-
 	Json::Value transaction_json;
 	transaction_json["source_address"] = prv.GetBase58Address();
 	transaction_json["fee"] = 1000;
