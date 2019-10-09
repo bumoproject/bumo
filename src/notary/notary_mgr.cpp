@@ -198,14 +198,14 @@ namespace bumo {
 
 	bool ChainObj::BuildSingleVoting(ProposalType type, const ProposalRecord &record, ProposalType peer_type, int64_t next_proposal_seq){
 		ProposalInfo vote_proposal;
-		//先获取对端列表
+		//Get peer list
 		if (!peer_chain_->GetProposalInfo(peer_type, next_proposal_seq, vote_proposal)){
-			//不存在在直接返回
+			//return if not exit
 			//LOG_INFO("Chain %s,no proposl from peer type :%d", comm_unique_.c_str(), peer_type);
 			return false;
 		}
 
-		//当获取对端为send时候，需要保证其状态非ok状态
+		//we need to ensure that it is ok when getting peer list
 		if (peer_type == ProposalType::PROPOSAL_SEND){
 			if (vote_proposal.status == EXECUTE_STATE_SUCCESS || vote_proposal.status == EXECUTE_STATE_FAIL){
 				LOG_INFO("%s:If peers' output is sucess or fail, ignore it.%d", chain_config_.output_data_.c_str(), vote_proposal.status);
